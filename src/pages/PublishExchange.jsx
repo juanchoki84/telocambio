@@ -1190,12 +1190,8 @@ function PublishExchange() {
                       />
 
                       <div className="mediaPreviewInfo">
-                        <span>Portada automática</span>
-                        <strong>
-                          {serviceDefaultMedia?.name ||
-                            `Servicio de ${formData.offerServiceType}`}
-                        </strong>
-                      </div>
+  <span>Portada automática</span>
+</div>
                     </article>
                   </div>
                 </div>
