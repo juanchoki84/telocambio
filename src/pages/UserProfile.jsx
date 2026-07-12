@@ -273,10 +273,10 @@ function UserProfile() {
     }
 
     if (
-      !location?.localityId ||
-      !location?.lat ||
-      !location?.lon
-    ) {
+  !location?.localityId ||
+  location?.lat == null ||
+  location?.lon == null
+) {
       setError(
         "Seleccioná tu provincia y localidad para calcular el radio de búsqueda."
       );
