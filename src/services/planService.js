@@ -16,10 +16,14 @@ export const FALLBACK_FREE_PLAN = {
   description: "Plan inicial para publicar intercambios.",
   order: 1,
   limits: {
-    maxActivePublications: 2,
-    maxMediaPerPublication: 3,
-    maxVideosPerPublication: 0,
-    maxVideoSizeMb: 0,
+    /*
+      Respaldo local para casos en los que no pueda leerse /plans/free.
+      La configuración efectiva se resuelve siempre desde el catálogo.
+    */
+    maxActivePublications: 10,
+    maxMediaPerPublication: 5,
+    maxVideosPerPublication: 1,
+    maxVideoSizeMb: 40,
   },
   benefits: {
     canReceiveProposals: true,
@@ -180,6 +184,38 @@ export async function getUserPlan(uid) {
   return normalizePlan(snapshot.val());
 }
 
+function mergeUserPlanWithCatalog(userPlan, catalogPlan) {
+  const normalizedUserPlan = normalizePlan(userPlan);
+  const normalizedCatalogPlan = normalizePlan(catalogPlan);
+
+  return normalizePlan({
+    /*
+      Conservamos la información propia de la asignación del usuario:
+      estado, fechas, ciclo y proveedor de facturación.
+    */
+    ...normalizedUserPlan,
+
+    /*
+      El nombre, precios, límites y beneficios se toman siempre del
+      catálogo actual para que los cambios administrativos se reflejen
+      sin tener que actualizar users/{uid}/plan manualmente.
+    */
+    id: normalizedCatalogPlan.id,
+    name: normalizedCatalogPlan.name,
+    description: normalizedCatalogPlan.description,
+    order: normalizedCatalogPlan.order,
+    priceMonthly: normalizedCatalogPlan.priceMonthly,
+    priceYearly: normalizedCatalogPlan.priceYearly,
+    limits: normalizedCatalogPlan.limits,
+    benefits: normalizedCatalogPlan.benefits,
+    status: normalizedUserPlan.status,
+    sourcePlanUpdatedAt:
+      normalizedCatalogPlan.updatedAt ||
+      normalizedUserPlan.sourcePlanUpdatedAt ||
+      null,
+  });
+}
+
 export async function ensureUserPlan(uid) {
   if (!uid) {
     throw new Error("Usuario no autenticado.");
@@ -187,32 +223,58 @@ export async function ensureUserPlan(uid) {
 
   const currentPlan = await getUserPlan(uid);
 
+  /*
+    Si el usuario tiene una asignación activa o de prueba, mantenemos
+    esa asignación pero actualizamos sus límites y beneficios desde
+    /plans/{planId}. Esto evita que quede usando una copia antigua.
+  */
   if (currentPlan && isUserPlanUsable(currentPlan)) {
-    return currentPlan;
+    try {
+      const catalogPlan = await getCatalogPlanById(
+        currentPlan.id || DEFAULT_PLAN_ID
+      );
+
+      return mergeUserPlanWithCatalog(
+        currentPlan,
+        catalogPlan
+      );
+    } catch (error) {
+      console.warn(
+        "No pudimos actualizar el plan del usuario desde el catálogo. Usamos la copia guardada.",
+        error
+      );
+
+      return currentPlan;
+    }
   }
 
   /*
-    Los usuarios nuevos reciben el plan Gratis durante la creación de
-    users/{uid}. Si encontramos una cuenta anterior sin plan, usamos el
-    plan Gratis como respaldo sin intentar escribir campos administrativos
-    desde el navegador.
+    Si no tiene plan, o su asignación está vencida/cancelada, se usa
+    el plan Gratis vigente. No se reactiva accidentalmente un plan pago
+    vencido y tampoco se escriben campos administrativos desde el cliente.
   */
   let freePlan = FALLBACK_FREE_PLAN;
 
   try {
-    freePlan = await getCatalogPlanById(DEFAULT_PLAN_ID);
+    freePlan = await getCatalogPlanById(
+      DEFAULT_PLAN_ID
+    );
   } catch (error) {
     console.warn(
-      "No pudimos leer el catálogo de planes. Usamos el plan Gratis local.",
+      "No pudimos leer el plan Gratis del catálogo. Usamos el respaldo local.",
       error
     );
   }
 
-  const fallbackUserPlan = buildUserPlanSnapshot(freePlan, {
-    billingProvider: "system_fallback",
-    billingCycle: "monthly",
-    updatedBy: "system",
-  });
+  const fallbackUserPlan = buildUserPlanSnapshot(
+    freePlan,
+    {
+      status: "active",
+      billingProvider: "system_fallback",
+      billingCycle: "monthly",
+      updatedBy: "system",
+    }
+  );
 
   return normalizePlan(fallbackUserPlan);
 }

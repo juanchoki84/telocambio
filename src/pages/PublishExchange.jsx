@@ -17,7 +17,6 @@ import {
 } from "../utils/serviceMedia";
 import {
   ensureUserPlan,
-  getPlanLimitLabel,
   validateMediaSelectionAgainstPlan,
   validatePublicationAgainstPlan,
 } from "../services/planService";
@@ -201,8 +200,62 @@ function PublishExchange() {
   const serviceImageUrl = isOfferingService
     ? getServiceImageUrl(formData.offerServiceType)
     : "";
-  const planMaxMedia = userPlan?.limits?.maxMediaPerPublication || 3;
-  const hasReachedMediaLimit = existingMedia.length >= planMaxMedia;
+  const planMaxMedia = Number(
+    userPlan?.limits?.maxMediaPerPublication ?? 0
+  );
+  const planMaxVideos = Number(
+    userPlan?.limits?.maxVideosPerPublication ?? 0
+  );
+  const planMaxVideoSizeMb = Number(
+    userPlan?.limits?.maxVideoSizeMb ?? 0
+  );
+
+  const currentMediaCount =
+    existingMedia.length + mediaFiles.length;
+
+  const remainingMediaSlots = Math.max(
+    planMaxMedia - currentMediaCount,
+    0
+  );
+
+  const hasReachedMediaLimit =
+    !planLoading &&
+    Boolean(userPlan) &&
+    currentMediaCount >= planMaxMedia;
+
+  const mediaPlanDescription = useMemo(() => {
+    if (planLoading || !userPlan) {
+      return "Estamos consultando los límites multimedia de tu plan.";
+    }
+
+    const planName = userPlan.name || "actual";
+    const mediaLabel =
+      planMaxMedia === 1
+        ? "1 archivo"
+        : `${planMaxMedia} archivos`;
+
+    if (planMaxVideos <= 0) {
+      return `Tu plan ${planName} permite hasta ${mediaLabel} por publicación, únicamente imágenes. El primer archivo se usará como portada.`;
+    }
+
+    const videoLabel =
+      planMaxVideos === 1
+        ? "1 video"
+        : `${planMaxVideos} videos`;
+
+    const videoSizeText =
+      planMaxVideoSizeMb > 0
+        ? ` de hasta ${planMaxVideoSizeMb} MB cada uno`
+        : "";
+
+    return `Tu plan ${planName} permite hasta ${mediaLabel} por publicación, con un máximo de ${videoLabel}${videoSizeText}. El primer archivo se usará como portada.`;
+  }, [
+    planLoading,
+    userPlan,
+    planMaxMedia,
+    planMaxVideos,
+    planMaxVideoSizeMb,
+  ]);
 
   useEffect(() => {
     if (authLoading) return undefined;
@@ -1190,8 +1243,8 @@ function PublishExchange() {
                       />
 
                       <div className="mediaPreviewInfo">
-  <span>Portada automática</span>
-</div>
+                        <span>Portada automática</span>
+                      </div>
                     </article>
                   </div>
                 </div>
@@ -1203,10 +1256,7 @@ function PublishExchange() {
               <div>
                 <span className="miniLabel">Fotos y videos</span>
                 <h2>Mostrá el producto que ofrecés</h2>
-                <p>
-                  Tu plan actual permite hasta {planMaxMedia} archivos entre imágenes y videos. El
-                  primer archivo se usará como portada de la publicación.
-                </p>
+                <p>{mediaPlanDescription}</p>
               </div>
 
               {mediaFiles.length > 0 && (
@@ -1233,9 +1283,21 @@ function PublishExchange() {
               <span className="mediaDropzoneIcon">＋</span>
               <strong>Agregar fotos o videos</strong>
               <small>
-                {hasReachedMediaLimit
-                  ? `Ya alcanzaste el máximo de ${planMaxMedia} archivos de tu plan`
-                  : selectedFilesInfo}
+                {planLoading
+                  ? "Consultando límites del plan..."
+                  : hasReachedMediaLimit
+                    ? `Ya alcanzaste el máximo de ${planMaxMedia} archivos de tu plan`
+                    : mediaFiles.length > 0
+                      ? `${selectedFilesInfo} · ${remainingMediaSlots} ${
+                          remainingMediaSlots === 1
+                            ? "espacio disponible"
+                            : "espacios disponibles"
+                        }`
+                      : `${remainingMediaSlots} ${
+                          remainingMediaSlots === 1
+                            ? "espacio disponible"
+                            : "espacios disponibles"
+                        }`}
               </small>
             </label>
 
