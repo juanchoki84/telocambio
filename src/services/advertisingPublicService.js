@@ -22,6 +22,38 @@ function cleanString(value) {
   return String(value || "").trim();
 }
 
+function normalizePlacementValue(placement) {
+  if (placement === "home_top") {
+    return "panel_top";
+  }
+
+  if (placement === "home_middle") {
+    return "panel_middle";
+  }
+
+  return cleanString(placement);
+}
+
+function normalizePlacements(value) {
+  const rawPlacements = Array.isArray(value)
+    ? value
+    : value && typeof value === "object"
+      ? Object.values(value)
+      : value
+        ? [value]
+        : [];
+
+  return [
+    ...new Set(
+      rawPlacements
+        .map(normalizePlacementValue)
+        .filter((placement) =>
+          PUBLIC_PLACEMENTS.has(placement)
+        )
+    ),
+  ];
+}
+
 function normalizeAsset(asset = null) {
   if (!asset || typeof asset !== "object") {
     return null;
@@ -44,17 +76,44 @@ function normalizeAsset(asset = null) {
 function normalizeAdvertisement(id, value = {}) {
   const assets = value.assets || {};
 
+  /*
+    Los anuncios nuevos guardan placements[].
+    Los anuncios anteriores solo guardaban placement.
+    Ambos formatos se aceptan para no requerir migración.
+  */
+  const placements = normalizePlacements(
+    value.placements || value.placement
+  );
+
   return {
     id,
-    campaignName: cleanString(value.campaignName),
-    companyName: cleanString(value.companyName),
-    placement: cleanString(value.placement),
-    destinationUrl: cleanString(value.destinationUrl),
-    description: cleanString(value.description),
+    campaignName: cleanString(
+      value.campaignName
+    ),
+    companyName: cleanString(
+      value.companyName
+    ),
+    placements,
+
+    /*
+      Se conserva placement con la primera opción para mantener
+      compatibilidad con cualquier componente anterior que todavía
+      lo consulte directamente.
+    */
+    placement: placements[0] || "",
+    destinationUrl: cleanString(
+      value.destinationUrl
+    ),
+    description: cleanString(
+      value.description
+    ),
     startDate: cleanString(value.startDate),
     endDate: cleanString(value.endDate),
-    durationDays: Number(value.durationDays || 0),
-    status: cleanString(value.status) || "active",
+    durationDays: Number(
+      value.durationDays || 0
+    ),
+    status:
+      cleanString(value.status) || "active",
     updatedAt: Number(value.updatedAt || 0),
     assets: {
       desktop: normalizeAsset(assets.desktop),
@@ -66,19 +125,19 @@ function normalizeAdvertisement(id, value = {}) {
 
 function getLocalDateKey(date = new Date()) {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(
-    2,
-    "0"
-  );
-  const day = String(date.getDate()).padStart(
-    2,
-    "0"
-  );
+  const month = String(
+    date.getMonth() + 1
+  ).padStart(2, "0");
+  const day = String(
+    date.getDate()
+  ).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
 }
 
-function hasAdvertisementAsset(advertisement) {
+function hasAdvertisementAsset(
+  advertisement
+) {
   return Boolean(
     advertisement.assets.desktop ||
       advertisement.assets.mobile ||
@@ -92,7 +151,7 @@ function isAdvertisementCurrentlyVisible(
 ) {
   if (
     advertisement.status !== "active" ||
-    !PUBLIC_PLACEMENTS.has(advertisement.placement)
+    advertisement.placements.length === 0
   ) {
     return false;
   }
@@ -114,6 +173,15 @@ function isAdvertisementCurrentlyVisible(
   return hasAdvertisementAsset(advertisement);
 }
 
+function advertisementHasPlacement(
+  advertisement,
+  placement
+) {
+  return advertisement.placements.includes(
+    placement
+  );
+}
+
 export function listenPublicAdvertisements(
   callback,
   onError
@@ -125,10 +193,11 @@ export function listenPublicAdvertisements(
       const advertisements = [];
 
       snapshot.forEach((childSnapshot) => {
-        const advertisement = normalizeAdvertisement(
-          childSnapshot.key,
-          childSnapshot.val() || {}
-        );
+        const advertisement =
+          normalizeAdvertisement(
+            childSnapshot.key,
+            childSnapshot.val() || {}
+          );
 
         if (
           isAdvertisementCurrentlyVisible(
@@ -136,6 +205,11 @@ export function listenPublicAdvertisements(
             todayKey
           )
         ) {
+          /*
+            Cada campaña se devuelve una sola vez, aunque tenga
+            varias ubicaciones. De esta manera no se duplican IDs
+            ni se generan rotaciones repetidas.
+          */
           advertisements.push(advertisement);
         }
       });
@@ -172,7 +246,10 @@ export function listenAdvertisementsByPlacement(
       callback(
         advertisements.filter(
           (advertisement) =>
-            advertisement.placement === placement
+            advertisementHasPlacement(
+              advertisement,
+              placement
+            )
         )
       );
     },
@@ -187,10 +264,12 @@ export function listenPanelAdvertisements(
   return listenPublicAdvertisements(
     (advertisements) => {
       callback(
-        advertisements.filter((advertisement) =>
-          PANEL_PLACEMENTS.has(
-            advertisement.placement
-          )
+        advertisements.filter(
+          (advertisement) =>
+            advertisement.placements.some(
+              (placement) =>
+                PANEL_PLACEMENTS.has(placement)
+            )
         )
       );
     },

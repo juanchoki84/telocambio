@@ -1120,6 +1120,55 @@ function ExchangeMediaPreview({ exchange, className = "" }) {
   );
 }
 
+function normalizeAdvertisementPlacementValue(
+  placement
+) {
+  if (placement === "home_top") {
+    return "panel_top";
+  }
+
+  if (placement === "home_middle") {
+    return "panel_middle";
+  }
+
+  return String(placement || "").trim();
+}
+
+function getAdvertisementPlacements(
+  advertisement
+) {
+  const rawPlacements = Array.isArray(
+    advertisement?.placements
+  )
+    ? advertisement.placements
+    : advertisement?.placements &&
+        typeof advertisement.placements ===
+          "object"
+      ? Object.values(advertisement.placements)
+      : advertisement?.placement
+        ? [advertisement.placement]
+        : [];
+
+  return [
+    ...new Set(
+      rawPlacements
+        .map(
+          normalizeAdvertisementPlacementValue
+        )
+        .filter(Boolean)
+    ),
+  ];
+}
+
+function advertisementHasPlacement(
+  advertisement,
+  placement
+) {
+  return getAdvertisementPlacements(
+    advertisement
+  ).includes(placement);
+}
+
 function getAdvertisementAssetUrl(
   advertisement,
   slot,
@@ -1411,21 +1460,30 @@ function Dashboard() {
   const panelTopAdvertisements = useMemo(() => {
     return panelAdvertisements.filter(
       (advertisement) =>
-        advertisement.placement === "panel_top"
+        advertisementHasPlacement(
+          advertisement,
+          "panel_top"
+        )
     );
   }, [panelAdvertisements]);
 
   const panelMiddleAdvertisements = useMemo(() => {
     return panelAdvertisements.filter(
       (advertisement) =>
-        advertisement.placement === "panel_middle"
+        advertisementHasPlacement(
+          advertisement,
+          "panel_middle"
+        )
     );
   }, [panelAdvertisements]);
 
   const panelFeedAdvertisements = useMemo(() => {
     return panelAdvertisements.filter(
       (advertisement) =>
-        advertisement.placement === "panel_feed"
+        advertisementHasPlacement(
+          advertisement,
+          "panel_feed"
+        )
     );
   }, [panelAdvertisements]);
 
