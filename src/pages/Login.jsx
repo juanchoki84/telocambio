@@ -19,6 +19,7 @@ import {
   startPhoneMfaSignIn,
 } from "../services/authService";
 import LogoMark from "../components/LogoMark";
+import { useAuth } from "../context/AuthContext";
 
 const AUTH_STEPS = {
   CREDENTIALS: "credentials",
@@ -54,7 +55,13 @@ function GoogleIcon() {
 
 function Login() {
   const navigate = useNavigate();
+  const {
+    user: restoredUser,
+    authLoading,
+  } = useAuth();
+
   const recaptchaVerifierRef = useRef(null);
+  const restoredSessionCheckedRef = useRef(false);
 
   const [mode, setMode] = useState("login");
   const [step, setStep] = useState(AUTH_STEPS.CREDENTIALS);
@@ -75,6 +82,8 @@ function Login() {
   const [smsCode, setSmsCode] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [restoringSession, setRestoringSession] =
+    useState(true);
   const [error, setError] = useState("");
 
   const isRegister = mode === "register";
@@ -85,6 +94,81 @@ function Login() {
       recaptchaVerifierRef.current = null;
     };
   }, []);
+
+  /*
+    onAuthStateChanged restaura la sesión almacenada antes de mostrar
+    el formulario. Si la sesión ya está completa, el usuario vuelve
+    directamente al panel sin ingresar nuevamente sus credenciales.
+  */
+  useEffect(() => {
+    if (
+      authLoading ||
+      restoredSessionCheckedRef.current
+    ) {
+      return undefined;
+    }
+
+    restoredSessionCheckedRef.current = true;
+
+    if (!restoredUser) {
+      setRestoringSession(false);
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    async function restoreExistingSession() {
+      try {
+        const authenticationState =
+          await prepareAuthenticatedUser(
+            restoredUser
+          );
+
+        if (cancelled) return;
+
+        if (!authenticationState.emailVerified) {
+          setError(
+            "Tu sesión estaba guardada, pero todavía necesitás verificar el correo electrónico."
+          );
+          setRestoringSession(false);
+          await logoutUser();
+          return;
+        }
+
+        if (!authenticationState.mfaEnrolled) {
+          setPendingUser(
+            authenticationState.user
+          );
+          setStep(AUTH_STEPS.ENROLL_PHONE);
+          setRestoringSession(false);
+          return;
+        }
+
+        navigate("/panel", {
+          replace: true,
+        });
+      } catch (restoreError) {
+        console.error(restoreError);
+
+        if (!cancelled) {
+          setError(
+            getAuthErrorMessage(restoreError)
+          );
+          setRestoringSession(false);
+        }
+      }
+    }
+
+    restoreExistingSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    authLoading,
+    restoredUser,
+    navigate,
+  ]);
 
   const clearRecaptcha = () => {
     recaptchaVerifierRef.current?.clear();
@@ -395,6 +479,28 @@ function Login() {
   };
 
   const headerContent = getHeaderContent();
+
+  if (authLoading || restoringSession) {
+    return (
+      <main className="authPage authPageWithLogoBg">
+        <section className="authCard authCardSecure">
+          <div className="brand authBrand">
+            <LogoMark size="large" />
+            <span>TeLoCambio</span>
+          </div>
+
+          <h1>Restaurando tu sesión</h1>
+          <p>
+            Estamos recuperando tu acceso de forma segura.
+          </p>
+
+          <p className="loadingText">
+            Un momento...
+          </p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="authPage authPageWithLogoBg">

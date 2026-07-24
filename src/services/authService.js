@@ -1,4 +1,5 @@
 import {
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
   getMultiFactorResolver,
   GoogleAuthProvider,
@@ -8,6 +9,7 @@ import {
   RecaptchaVerifier,
   reload,
   sendEmailVerification,
+  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -33,6 +35,28 @@ const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt: "select_account",
 });
+
+let localPersistencePromise = null;
+
+/*
+  Firebase Auth conserva la sesión en el almacenamiento local del
+  navegador. La configuración se aplica antes de cualquier ingreso
+  para que la sesión sobreviva al cierre de pestañas, del navegador
+  y a reinicios del equipo.
+*/
+export function ensurePersistentAuthSession() {
+  if (!localPersistencePromise) {
+    localPersistencePromise = setPersistence(
+      auth,
+      browserLocalPersistence
+    ).catch((error) => {
+      localPersistencePromise = null;
+      throw error;
+    });
+  }
+
+  return localPersistencePromise;
+}
 
 function getEmailActionSettings() {
   if (typeof window === "undefined") return undefined;
@@ -176,6 +200,8 @@ export async function registerUser({ name, email, password }) {
 export async function loginUser({ email, password }) {
   const cleanEmail = String(email || "").trim().toLowerCase();
 
+  await ensurePersistentAuthSession();
+
   const userCredential = await signInWithEmailAndPassword(
     auth,
     cleanEmail,
@@ -186,7 +212,12 @@ export async function loginUser({ email, password }) {
 }
 
 export async function loginWithGoogle() {
-  const userCredential = await signInWithPopup(auth, googleProvider);
+  await ensurePersistentAuthSession();
+
+  const userCredential = await signInWithPopup(
+    auth,
+    googleProvider
+  );
 
   return userCredential.user;
 }
@@ -392,6 +423,13 @@ export async function completePhoneMfaSignIn({
   );
 
   const assertion = PhoneMultiFactorGenerator.assertion(credential);
+
+  /*
+    Reafirmamos la persistencia antes de completar el segundo factor.
+    Esto cubre tanto el ingreso por email como el ingreso con Google.
+  */
+  await ensurePersistentAuthSession();
+
   const userCredential = await resolver.resolveSignIn(assertion);
 
   await ensureUserRecord(userCredential.user);
@@ -429,6 +467,8 @@ export function getAuthErrorMessage(error) {
       "Ya hay una ventana de ingreso abierta.",
     "auth/network-request-failed":
       "No pudimos conectarnos con Firebase. Revisá tu conexión.",
+    "auth/web-storage-unsupported":
+      "El navegador está bloqueando el almacenamiento necesario para mantener la sesión. Habilitá las cookies y el almacenamiento del sitio.",
     "auth/too-many-requests":
       "Se realizaron demasiados intentos. Esperá unos minutos e intentá nuevamente.",
     "auth/invalid-phone-number":
