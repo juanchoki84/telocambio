@@ -1813,6 +1813,16 @@ function Dashboard() {
 
     if (!exchange?.id) return;
 
+    /*
+      Cualquier usuario autenticado puede explorar publicaciones.
+      Para enviar una propuesta sí necesita al menos una publicación
+      activa, porque debe indicar qué ofrece a cambio.
+    */
+    if (activeUserExchanges.length === 0) {
+      navigate("/publicar");
+      return;
+    }
+
     setError("");
     setSuccessMessage("");
     setProposalError("");
@@ -2142,22 +2152,7 @@ function Dashboard() {
       </section>
 
       <section className="discoveryPanel refinedDiscoveryPanel multiDiscoveryPanel">
-        {activeUserExchanges.length === 0 ? (
-          <div className="discoveryEmptyCard">
-            <div className="emptyLogoIcon">
-              <LogoMark size="large" />
-            </div>
-
-            <h3>Primero necesitás una publicación propia</h3>
-            <p>
-              Para enviar una propuesta, TeLoCambio necesita saber qué tenés para
-              ofrecer a cambio.
-            </p>
-            <Link to="/publicar" className="primarySmallLink">
-              Crear publicación
-            </Link>
-          </div>
-        ) : discoverySuggestions.length === 0 ? (
+        {discoverySuggestions.length === 0 ? (
           <div className="discoveryEmptyCard">
             <span>✓</span>
             <h3>
@@ -2328,10 +2323,18 @@ function Dashboard() {
                         className="likeButton dashboardSuggestionProposalButton"
                         disabled={interestLoading || Boolean(swipeDirection)}
                         onClick={() => handleSuggestionInterest(suggestion)}
+                        title={
+                          activeUserExchanges.length === 0
+                            ? "Para enviar una propuesta primero necesitás publicar qué ofrecés a cambio."
+                            : "Enviar una propuesta de intercambio"
+                        }
                       >
-                        {interestLoading && proposalModalExchange?.id === suggestion.id
-                          ? "Enviando..."
-                          : "Enviar propuesta"}
+                        {activeUserExchanges.length === 0
+                          ? "Publicá para proponer"
+                          : interestLoading &&
+                              proposalModalExchange?.id === suggestion.id
+                            ? "Enviando..."
+                            : "Enviar propuesta"}
                       </button>
 
                       <button
