@@ -14537,3 +14537,104 @@ body.homeFullBackgroundPage .appFooterInner {
   }
 }
 
+/* =========================================================
+   FIX PANEL - Publicidad lateral y botón sin publicación
+   ========================================================= */
+
+.dashboardSuggestionsLayout {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.dashboardSuggestionsLayout.hasSidebarAdvertisement {
+  grid-template-columns: minmax(0, 1fr) 300px;
+}
+
+.dashboardSuggestionsLayout .dashboardSuggestionsGrid {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(245px, 1fr)
+  );
+}
+
+.dashboardSuggestionsAdvertisingAside {
+  grid-column: 2;
+  width: 100%;
+  min-width: 0;
+  position: sticky;
+  top: 96px;
+  align-self: start;
+}
+
+.dashboardSuggestionsAdvertisingAside
+  .dashboardAdvertisingLink,
+.dashboardSuggestionsAdvertisingAside
+  .dashboardAdvertisingSlot.feed {
+  width: 100%;
+  min-width: 0;
+}
+
+.dashboardSuggestionsAdvertisingAside
+  .dashboardAdvertisingSlot.feed {
+  border-radius: 30px;
+}
+
+.dashboardSuggestionActions {
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+  gap: 10px;
+  align-items: stretch;
+}
+
+.dashboardSuggestionProposalButton,
+.dashboardSuggestionDismissButton {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 10px 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 12.5px;
+  line-height: 1.15;
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.dashboardSuggestionProposalButton.requiresPublication {
+  border-color: #132238;
+  background: #132238;
+  color: #ffffff;
+  box-shadow: 0 12px 26px rgba(19, 34, 56, 0.18);
+}
+
+@media (max-width: 860px) {
+  .dashboardSuggestionsLayout.hasSidebarAdvertisement {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboardSuggestionsAdvertisingAside {
+    grid-column: auto;
+    width: min(360px, 100%);
+    position: static;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .dashboardSuggestionActions {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import AppNavbar from "../components/AppNavbar";
@@ -2190,8 +2190,15 @@ function Dashboard() {
             )}
           </div>
         ) : (
-          <div className="dashboardSuggestionsGrid">
-            {discoverySuggestions.map((suggestion, index) => {
+          <div
+            className={`dashboardSuggestionsLayout ${
+              panelFeedAdvertisements.length > 0
+                ? "hasSidebarAdvertisement"
+                : ""
+            }`.trim()}
+          >
+            <div className="dashboardSuggestionsGrid">
+              {discoverySuggestions.map((suggestion) => {
               const suggestionMediaCount = getMediaCount(suggestion);
               const suggestionIsService = isServiceExchange(suggestion);
               const suggestionIsLicensed = hasLicensedCredential(suggestion);
@@ -2202,17 +2209,11 @@ function Dashboard() {
               );
               const suggestionIsFavorite = favoriteIds.includes(suggestion.id);
 
-              const shouldInsertFeedAdvertisement =
-                panelFeedAdvertisements.length > 0 &&
-                index ===
-                  Math.min(
-                    2,
-                    discoverySuggestions.length - 1
-                  );
-
               return (
-                <Fragment key={suggestion.id}>
-                  <article className="dashboardSuggestionCard">
+                <article
+                  className="dashboardSuggestionCard"
+                  key={suggestion.id}
+                >
                   <div className="dashboardSuggestionMediaWrap">
                     <ExchangeMediaPreview
                       exchange={suggestion}
@@ -2320,7 +2321,11 @@ function Dashboard() {
                     <div className="dashboardSuggestionActions">
                       <button
                         type="button"
-                        className="likeButton dashboardSuggestionProposalButton"
+                        className={`likeButton dashboardSuggestionProposalButton ${
+                          activeUserExchanges.length === 0
+                            ? "requiresPublication"
+                            : ""
+                        }`.trim()}
                         disabled={interestLoading || Boolean(swipeDirection)}
                         onClick={() => handleSuggestionInterest(suggestion)}
                         title={
@@ -2330,7 +2335,7 @@ function Dashboard() {
                         }
                       >
                         {activeUserExchanges.length === 0
-                          ? "Publicá para proponer"
+                          ? "Crear publicación"
                           : interestLoading &&
                               proposalModalExchange?.id === suggestion.id
                             ? "Enviando..."
@@ -2358,17 +2363,22 @@ function Dashboard() {
                         : "Denunciar publicación"}
                     </button>
                   </div>
-                  </article>
-
-                  {shouldInsertFeedAdvertisement && (
-                    <DashboardAdvertisementSlot
-                      advertisements={panelFeedAdvertisements}
-                      variant="feed"
-                    />
-                  )}
-                </Fragment>
+                </article>
               );
             })}
+            </div>
+
+            {panelFeedAdvertisements.length > 0 && (
+              <aside
+                className="dashboardSuggestionsAdvertisingAside"
+                aria-label="Publicidad"
+              >
+                <DashboardAdvertisementSlot
+                  advertisements={panelFeedAdvertisements}
+                  variant="feed"
+                />
+              </aside>
+            )}
           </div>
         )}
       </section>
