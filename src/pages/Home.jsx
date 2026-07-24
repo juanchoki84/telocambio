@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import "../App.css";
 import exchangePeopleImage from "../assets/home-exchange-people-real.png";
 import phoneImage from "../assets/home-phone.png";
@@ -7,6 +7,7 @@ import sofaImage from "../assets/home-sofa.png";
 import bikeImage from "../assets/home-bike.png";
 import consoleImage from "../assets/home-console.png";
 import LogoMark from "../components/LogoMark";
+import { useAuth } from "../context/AuthContext";
 import {
   ArrowRight,
   Baby,
@@ -256,6 +257,9 @@ function ListingPreviewCard({ listing, index }) {
 }
 
 function Home() {
+  const navigate = useNavigate();
+  const { user, authLoading } = useAuth();
+
   useEffect(() => {
     document.body.classList.add("homeFullBackgroundPage");
 
@@ -263,6 +267,30 @@ function Home() {
       document.body.classList.remove("homeFullBackgroundPage");
     };
   }, []);
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/panel", {
+        replace: true,
+      });
+    }
+  }, [authLoading, user, navigate]);
+
+  /*
+    Mientras Firebase restaura la sesión evitamos mostrar el Home.
+    Si ya existe un usuario autenticado, mantenemos esta pantalla
+    breve hasta que React Router complete la redirección al panel.
+  */
+  if (authLoading || user) {
+    return (
+      <main className="app homeShowcaseApp">
+        <p className="loadingText">
+          Recuperando tu sesión...
+        </p>
+      </main>
+    );
+  }
+
   return (
     <main className="app homeShowcaseApp">
       <nav className="navbar homeShowcaseNavbar">
