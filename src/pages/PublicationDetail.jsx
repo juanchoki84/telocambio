@@ -1408,14 +1408,6 @@ function PublicationDetail() {
         >
           ← Volver a publicaciones
         </button>
-
-        <span>
-          Publicación de{" "}
-          <strong>
-            {publication.userName ||
-              "Usuario"}
-          </strong>
-        </span>
       </div>
 
       <section className="publicationDetailLayout">
