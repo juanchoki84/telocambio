@@ -14637,4 +14637,1309 @@ body.homeFullBackgroundPage .appFooterInner {
     grid-template-columns: 1fr;
   }
 }
+/* =========================================================
+   DASHBOARD COMPACTO + DETALLE DE PUBLICACIÓN
+   ========================================================= */
 
+/* Tarjetas resumidas del Dashboard */
+.dashboardSuggestionsLayout
+  .dashboardSuggestionsGrid {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(205px, 1fr)
+  );
+  gap: 16px;
+  align-items: start;
+}
+
+.dashboardSuggestionCompactCard {
+  min-height: 0;
+  border-radius: 24px;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.dashboardSuggestionCompactCard:hover,
+.dashboardSuggestionCompactCard:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(0, 198, 167, 0.34);
+  box-shadow:
+    0 20px 46px rgba(15, 23, 42, 0.14);
+  outline: none;
+}
+
+.dashboardSuggestionCompactMediaWrap {
+  min-height: 155px;
+  height: 155px;
+}
+
+.dashboardSuggestionCompactMediaWrap
+  .exchangeMediaCarousel,
+.dashboardSuggestionCompactMediaWrap
+  .exchangeMediaPlaceholder,
+.dashboardSuggestionCompactMediaWrap
+  .exchangeMediaPreview,
+.dashboardSuggestionCompactMediaWrap
+  .exchangeVideoPreview {
+  height: 155px;
+  min-height: 155px;
+}
+
+.dashboardSuggestionCompactMediaWrap
+  .exchangeMediaExpandButton {
+  cursor: pointer;
+}
+
+.dashboardSuggestionCompactMediaWrap
+  .mediaCarouselButton {
+  width: 30px;
+  height: 30px;
+  font-size: 23px;
+}
+
+.dashboardSuggestionCompactMediaWrap
+  .mediaCarouselDots {
+  bottom: 8px;
+  padding: 5px 7px;
+  gap: 5px;
+}
+
+.dashboardSuggestionCompactMediaWrap
+  .mediaCarouselDots button {
+  width: 6px;
+  height: 6px;
+}
+
+.dashboardSuggestionCompactMediaWrap
+  .mediaCarouselDots button.active {
+  width: 17px;
+}
+
+.dashboardSuggestionCompactBody {
+  min-height: 114px;
+  gap: 8px;
+  padding: 13px 14px 14px;
+}
+
+.dashboardSuggestionCompactBody h3 {
+  min-height: 38px;
+  margin: 0;
+  color: #101828;
+  font-size: 17px;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dashboardSuggestionCompactSearch {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.dashboardSuggestionCompactSearch span {
+  flex: 0 0 auto;
+  color: #008c76;
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.dashboardSuggestionCompactSearch strong {
+  min-width: 0;
+  color: #526174;
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: 900;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboardSuggestionCompactDistance {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #667085;
+}
+
+.dashboardSuggestionCompactDistance span {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 21px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 198, 167, 0.1);
+  color: #008c76;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.dashboardSuggestionCompactDistance strong {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 900;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Página completa de la publicación */
+.publicationDetailPage {
+  overflow-x: hidden;
+}
+
+.publicationDetailTopBar,
+.publicationDetailLayout,
+.publicationDetailNotFound {
+  width: min(1380px, calc(100% - 32px));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.publicationDetailTopBar {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.publicationDetailTopBar button {
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 15px;
+  background: #ffffff;
+  color: #132238;
+  font-size: 13px;
+  font-weight: 900;
+  box-shadow: 0 12px 28px rgba(19, 34, 56, 0.08);
+}
+
+.publicationDetailTopBar span {
+  color: #667085;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.publicationDetailTopBar strong {
+  color: #132238;
+}
+
+.publicationDetailLayout {
+  margin-top: 18px;
+  margin-bottom: 72px;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.38fr)
+    minmax(360px, 0.72fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.publicationDetailGallery,
+.publicationDetailContent {
+  border: 1px solid #dfe7f1;
+  border-radius: 34px;
+  background: #ffffff;
+  box-shadow:
+    0 24px 60px rgba(19, 34, 56, 0.09);
+}
+
+.publicationDetailGallery {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.publicationDetailMainMedia {
+  position: relative;
+  height: min(68vh, 720px);
+  min-height: 520px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(0, 198, 167, 0.1),
+      transparent 48%
+    ),
+    #edf3f7;
+}
+
+.publicationDetailMainMedia
+  > video {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #101828;
+}
+
+.publicationDetailMediaBackdrop {
+  position: absolute;
+  inset: -24px;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  object-fit: cover;
+  filter: blur(24px);
+  transform: scale(1.06);
+  opacity: 0.28;
+}
+
+.publicationDetailMediaContent {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.publicationDetailMediaLoading,
+.publicationDetailMediaEmpty {
+  min-height: 520px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  color: #526174;
+  font-weight: 900;
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(0, 198, 167, 0.1),
+      transparent 48%
+    ),
+    #f8fafc;
+}
+
+.publicationDetailMediaEmpty span {
+  width: 66px;
+  height: 66px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  background: #00c6a7;
+  color: #ffffff;
+  font-size: 26px;
+}
+
+.publicationDetailMediaArrow {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  background: rgba(19, 34, 56, 0.86);
+  color: #ffffff;
+  font-size: 35px;
+  line-height: 1;
+  font-weight: 900;
+  box-shadow: 0 16px 34px rgba(19, 34, 56, 0.24);
+}
+
+.publicationDetailMediaArrow.previous {
+  left: 18px;
+}
+
+.publicationDetailMediaArrow.next {
+  right: 18px;
+}
+
+.publicationDetailMediaCounter {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 5;
+  border-radius: 999px;
+  padding: 8px 11px;
+  background: rgba(19, 34, 56, 0.78);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  backdrop-filter: blur(10px);
+}
+
+.publicationDetailThumbnails {
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  border-top: 1px solid #e4ebf4;
+}
+
+.publicationDetailThumbnails button {
+  position: relative;
+  width: 84px;
+  height: 68px;
+  flex: 0 0 84px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  padding: 0;
+  background: #edf3f7;
+}
+
+.publicationDetailThumbnails button.active {
+  border-color: #00c6a7;
+  box-shadow: 0 0 0 3px rgba(0, 198, 167, 0.12);
+}
+
+.publicationDetailThumbnails img,
+.publicationDetailThumbnails video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.publicationDetailThumbnails button > strong {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(19, 34, 56, 0.28);
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.publicationDetailContent {
+  position: sticky;
+  top: 96px;
+  padding: 26px;
+  display: grid;
+  gap: 18px;
+}
+
+.publicationDetailHeading {
+  display: grid;
+  gap: 12px;
+}
+
+.publicationDetailBadges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.publicationDetailBadges span {
+  border-radius: 999px;
+  padding: 8px 11px;
+  background: #ede9fe;
+  color: #6d28d9;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.publicationDetailBadges span.licensed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.publicationDetailHeading h1 {
+  margin: 0;
+  color: #101828;
+  font-size: clamp(34px, 4.2vw, 58px);
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
+}
+
+.publicationDetailHeading p {
+  margin: 0;
+  color: #526174;
+  font-size: 15px;
+  line-height: 1.65;
+  font-weight: 700;
+  white-space: pre-wrap;
+}
+
+.publicationDetailInfoGrid {
+  display: grid;
+  gap: 11px;
+}
+
+.publicationDetailInfoGrid section {
+  min-width: 0;
+  border: 1px solid #e4ebf4;
+  border-radius: 22px;
+  padding: 16px;
+  background: #f8fafc;
+}
+
+.publicationDetailInfoGrid section > span {
+  display: block;
+  color: #008c76;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.publicationDetailInfoGrid section > strong {
+  display: block;
+  margin-top: 7px;
+  color: #132238;
+  font-size: 18px;
+  line-height: 1.25;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.publicationDetailInfoGrid section > small {
+  display: block;
+  margin-top: 5px;
+  color: #667085;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 800;
+}
+
+.publicationDetailInfoGrid section > p {
+  margin: 10px 0 0;
+  color: #526174;
+  font-size: 13px;
+  line-height: 1.55;
+  font-weight: 700;
+  white-space: pre-wrap;
+}
+
+.publicationDetailWantedBox {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(0, 198, 167, 0.11),
+      transparent 38%
+    ),
+    #f8fafc !important;
+}
+
+.publicationDetailActions,
+.publicationDetailOwnActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.publicationDetailActions button,
+.publicationDetailOwnActions a {
+  min-width: 0;
+  min-height: 48px;
+}
+
+.publicationDetailFavoriteButton {
+  border: 1px solid #dbe3ee;
+  border-radius: 999px;
+  padding: 11px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #132238;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.publicationDetailFavoriteButton span {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.publicationDetailFavoriteButton.isFavorite {
+  border-color: rgba(255, 93, 118, 0.32);
+  background: rgba(255, 93, 118, 0.1);
+  color: #c92745;
+}
+
+.publicationDetailInterestButton,
+.publicationDetailDismissButton {
+  width: 100%;
+  text-align: center;
+}
+
+.publicationDetailReportButton {
+  grid-column: 1 / -1;
+  width: fit-content;
+  margin: 2px auto 0;
+  align-self: center;
+}
+
+.publicationDetailProposalNotice {
+  grid-column: 1 / -1;
+  margin: 0;
+  border-radius: 18px;
+  padding: 13px 14px;
+  background: rgba(0, 198, 167, 0.09);
+  color: #526174;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 800;
+  text-align: center;
+}
+
+.publicationDetailNotFound {
+  margin-top: 42px;
+  margin-bottom: 80px;
+  border: 1px solid #dfe7f1;
+  border-radius: 34px;
+  padding: 42px;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(19, 34, 56, 0.08);
+}
+
+.publicationDetailNotFound h1 {
+  margin: 14px 0 0;
+  color: #101828;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.publicationDetailNotFound p {
+  max-width: 620px;
+  margin: 16px auto 24px;
+  color: #526174;
+  line-height: 1.65;
+  font-weight: 700;
+}
+
+@media (max-width: 1120px) {
+  .publicationDetailLayout {
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
+
+  .publicationDetailMainMedia {
+    min-height: 460px;
+  }
+}
+
+@media (max-width: 920px) {
+  .dashboardSuggestionsLayout
+    .dashboardSuggestionsGrid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(190px, 1fr)
+    );
+  }
+
+  .publicationDetailLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .publicationDetailContent {
+    position: static;
+  }
+
+  .publicationDetailMainMedia {
+    height: min(64vh, 620px);
+    min-height: 430px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboardSuggestionsLayout
+    .dashboardSuggestionsGrid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+    gap: 11px;
+  }
+
+  .dashboardSuggestionCompactCard {
+    border-radius: 20px;
+  }
+
+  .dashboardSuggestionCompactMediaWrap,
+  .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaCarousel,
+  .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaPlaceholder,
+  .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaPreview,
+  .dashboardSuggestionCompactMediaWrap
+    .exchangeVideoPreview {
+    height: 132px;
+    min-height: 132px;
+  }
+
+  .dashboardSuggestionCompactBody {
+    min-height: 108px;
+    padding: 11px;
+  }
+
+  .dashboardSuggestionCompactBody h3 {
+    min-height: 35px;
+    font-size: 15px;
+  }
+
+  .dashboardSuggestionCompactSearch strong,
+  .dashboardSuggestionCompactDistance strong {
+    font-size: 11.5px;
+  }
+
+  .dashboardSuggestionCompactMediaWrap
+    .mediaCarouselButton {
+    display: none;
+  }
+
+  .publicationDetailTopBar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .publicationDetailTopBar button {
+    width: 100%;
+  }
+
+  .publicationDetailLayout {
+    width: min(
+      100% - 20px,
+      1380px
+    );
+    gap: 14px;
+  }
+
+  .publicationDetailGallery,
+  .publicationDetailContent {
+    border-radius: 24px;
+  }
+
+  .publicationDetailMainMedia {
+    height: 390px;
+    min-height: 390px;
+  }
+
+  .publicationDetailMediaLoading,
+  .publicationDetailMediaEmpty {
+    min-height: 390px;
+  }
+
+  .publicationDetailContent {
+    padding: 20px;
+  }
+
+  .publicationDetailHeading h1 {
+    font-size: 36px;
+  }
+
+  .publicationDetailActions,
+  .publicationDetailOwnActions {
+    grid-template-columns: 1fr;
+  }
+
+  .publicationDetailReportButton,
+  .publicationDetailProposalNotice {
+    grid-column: auto;
+  }
+
+  .publicationDetailMediaArrow {
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+  }
+
+  .publicationDetailMediaArrow.previous {
+    left: 10px;
+  }
+
+  .publicationDetailMediaArrow.next {
+    right: 10px;
+  }
+}
+
+@media (max-width: 390px) {
+  .dashboardSuggestionsLayout
+    .dashboardSuggestionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboardSuggestionCompactMediaWrap,
+  .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaCarousel,
+  .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaPlaceholder,
+  .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaPreview,
+  .dashboardSuggestionCompactMediaWrap
+    .exchangeVideoPreview {
+    height: 180px;
+    min-height: 180px;
+  }
+}
+
+/* =========================================================
+   PUBLICATION DETAIL - medios completos y pantalla completa
+   ========================================================= */
+
+.publicationFullscreenOpen {
+  overflow: hidden;
+}
+
+.publicationDetailMainMedia {
+  background: #101828;
+}
+
+.publicationDetailMediaBackdrop {
+  display: none !important;
+}
+
+.publicationDetailImageButton,
+.publicationDetailVideoShell {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: #101828;
+}
+
+.publicationDetailImageButton {
+  cursor: zoom-in;
+}
+
+.publicationDetailImageButton:focus-visible {
+  outline: 3px solid #00c6a7;
+  outline-offset: -3px;
+}
+
+.publicationDetailMediaContent,
+.publicationDetailMainMedia > video,
+.publicationDetailVideoShell > video {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: block;
+  object-fit: contain !important;
+  object-position: center;
+  background: #101828;
+}
+
+.publicationDetailExpandHint,
+.publicationDetailExpandButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 12;
+  min-height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: rgba(19, 34, 56, 0.82);
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(10px);
+}
+
+.publicationDetailExpandButton {
+  cursor: pointer;
+}
+
+.publicationDetailExpandButton:hover,
+.publicationDetailImageButton:hover
+  .publicationDetailExpandHint {
+  background: #00a88f;
+}
+
+.publicationFullscreenOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: rgba(5, 11, 21, 0.98);
+  color: #ffffff;
+}
+
+.publicationFullscreenHeader {
+  min-height: 74px;
+  padding: 13px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 18, 32, 0.92);
+}
+
+.publicationFullscreenHeader span {
+  display: block;
+  color: #00d6b3;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.publicationFullscreenHeader strong {
+  display: block;
+  margin-top: 4px;
+  max-width: min(760px, 70vw);
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.publicationFullscreenClose {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.publicationFullscreenClose:hover {
+  background: #b42318;
+}
+
+.publicationFullscreenBody {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 18px 76px 24px;
+  display: grid;
+  place-items: center;
+}
+
+.publicationFullscreenMedia {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  background: #050b15;
+}
+
+.publicationFullscreenBody > img.publicationFullscreenMedia {
+  width: auto;
+  height: auto;
+}
+
+.publicationFullscreenFallback {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.publicationFullscreenArrow {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  background: rgba(19, 34, 56, 0.82);
+  color: #ffffff;
+  font-size: 38px;
+  line-height: 1;
+  font-weight: 900;
+  backdrop-filter: blur(10px);
+}
+
+.publicationFullscreenArrow:hover {
+  background: #00a88f;
+}
+
+.publicationFullscreenArrow.previous {
+  left: 16px;
+}
+
+.publicationFullscreenArrow.next {
+  right: 16px;
+}
+
+.publicationFullscreenCounter {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 4;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(19, 34, 56, 0.8);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 700px) {
+  .publicationDetailExpandHint,
+  .publicationDetailExpandButton {
+    top: 10px;
+    right: 10px;
+    min-height: 36px;
+    padding: 0 11px;
+    font-size: 11px;
+  }
+
+  .publicationFullscreenHeader {
+    min-height: 64px;
+    padding: 10px 12px;
+  }
+
+  .publicationFullscreenHeader strong {
+    max-width: 62vw;
+    font-size: 14px;
+  }
+
+  .publicationFullscreenClose {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .publicationFullscreenBody {
+    padding: 12px 48px 18px;
+  }
+
+  .publicationFullscreenArrow {
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+  }
+
+  .publicationFullscreenArrow.previous {
+    left: 6px;
+  }
+
+  .publicationFullscreenArrow.next {
+    right: 6px;
+  }
+}
+/* =========================================================
+   FIX FINAL - multimedia completa en visor de pantalla completa
+   ========================================================= */
+
+/*
+  La regla anterior dejaba a las imágenes con width/height auto.
+  En imágenes horizontales eso podía hacer que tomaran todo el ancho
+  y superaran la altura disponible, ocultando una parte de la foto.
+*/
+.publicationFullscreenBody {
+  box-sizing: border-box;
+}
+
+.publicationFullscreenBody
+  > img.publicationFullscreenMedia,
+.publicationFullscreenBody
+  > video.publicationFullscreenMedia {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: auto;
+  display: block;
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+
+/*
+  El video conserva los controles nativos dentro del área visible.
+*/
+.publicationFullscreenBody
+  > video.publicationFullscreenMedia {
+  background: #050b15;
+}
+
+/*
+  Evita que una regla anterior vuelva a asignar dimensiones automáticas
+  solamente a las imágenes.
+*/
+.publicationFullscreenBody
+  > img.publicationFullscreenMedia {
+  aspect-ratio: auto;
+}
+
+@media (max-width: 700px) {
+  .publicationFullscreenBody
+    > img.publicationFullscreenMedia,
+  .publicationFullscreenBody
+    > video.publicationFullscreenMedia {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+  }
+}
+/* =========================================================
+   FIX - Mostrar completo lo que busca en tarjetas del Dashboard
+   ========================================================= */
+
+.dashboardSuggestionCompactSearch {
+  align-items: flex-start;
+}
+
+.dashboardSuggestionCompactSearch strong {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/*
+  La tarjeta conserva su tamaño compacto, pero puede crecer solamente
+  lo necesario cuando el texto de búsqueda ocupa más de una línea.
+*/
+.dashboardSuggestionCompactBody {
+  height: auto;
+}
+/* =========================================================
+   FIX FINAL - Tarjetas compactas con altura uniforme
+   ========================================================= */
+
+/*
+  Todas las tarjetas reservan exactamente el mismo espacio para:
+  - multimedia;
+  - título de lo ofrecido;
+  - hasta tres líneas de lo buscado;
+  - distancia.
+*/
+.dashboardSuggestionsLayout
+  .dashboardSuggestionsGrid {
+  align-items: stretch;
+}
+
+.dashboardSuggestionCompactCard {
+  height: 350px;
+  min-height: 350px;
+  max-height: 350px;
+  display: grid;
+  grid-template-rows: 190px 160px;
+}
+
+/*
+  Usamos selectores más específicos para neutralizar las alturas
+  anteriores de .dashboardSuggestionMediaWrap.
+*/
+.dashboardSuggestionCompactCard
+  .dashboardSuggestionCompactMediaWrap,
+.dashboardSuggestionCompactCard
+  .dashboardSuggestionCompactMediaWrap
+  .exchangeMediaCarousel,
+.dashboardSuggestionCompactCard
+  .dashboardSuggestionCompactMediaWrap
+  .exchangeMediaPlaceholder,
+.dashboardSuggestionCompactCard
+  .dashboardSuggestionCompactMediaWrap
+  .exchangeMediaExpandButton,
+.dashboardSuggestionCompactCard
+  .dashboardSuggestionCompactMediaWrap
+  .exchangeMediaPreview,
+.dashboardSuggestionCompactCard
+  .dashboardSuggestionCompactMediaWrap
+  .exchangeVideoPreview {
+  width: 100%;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+}
+
+.dashboardSuggestionCompactBody {
+  height: 160px;
+  min-height: 160px;
+  max-height: 160px;
+  padding: 13px 14px 14px;
+  display: grid;
+  grid-template-rows:
+    38px
+    minmax(0, 1fr)
+    21px;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.dashboardSuggestionCompactBody h3 {
+  min-height: 38px;
+  max-height: 38px;
+  align-self: start;
+}
+
+.dashboardSuggestionCompactSearch {
+  min-height: 0;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.dashboardSuggestionCompactSearch strong {
+  display: -webkit-box;
+  min-width: 0;
+  max-height: calc(1.25em * 3);
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.dashboardSuggestionCompactDistance {
+  min-height: 21px;
+  margin-top: 0;
+  align-self: end;
+}
+
+/*
+  En celulares mantenemos todas las tarjetas iguales, pero reservamos
+  una línea adicional para “Busca” porque las columnas son más angostas.
+*/
+@media (max-width: 640px) {
+  .dashboardSuggestionCompactCard {
+    height: 302px;
+    min-height: 302px;
+    max-height: 302px;
+    grid-template-rows: 132px 170px;
+  }
+
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaCarousel,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaPlaceholder,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaExpandButton,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaPreview,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeVideoPreview {
+    height: 132px;
+    min-height: 132px;
+    max-height: 132px;
+  }
+
+  .dashboardSuggestionCompactBody {
+    height: 170px;
+    min-height: 170px;
+    max-height: 170px;
+    grid-template-rows:
+      35px
+      minmax(0, 1fr)
+      21px;
+  }
+
+  .dashboardSuggestionCompactSearch strong {
+    max-height: calc(1.25em * 4);
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+}
+
+@media (max-width: 390px) {
+  .dashboardSuggestionCompactCard {
+    height: 340px;
+    min-height: 340px;
+    max-height: 340px;
+    grid-template-rows: 180px 160px;
+  }
+
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaCarousel,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaPlaceholder,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaExpandButton,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeMediaPreview,
+  .dashboardSuggestionCompactCard
+    .dashboardSuggestionCompactMediaWrap
+    .exchangeVideoPreview {
+    height: 180px;
+    min-height: 180px;
+    max-height: 180px;
+  }
+
+  .dashboardSuggestionCompactBody {
+    height: 160px;
+    min-height: 160px;
+    max-height: 160px;
+  }
+
+  .dashboardSuggestionCompactSearch strong {
+    max-height: calc(1.25em * 3);
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+}

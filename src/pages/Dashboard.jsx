@@ -870,7 +870,13 @@ function ReportPublicationModal({
   );
 }
 
-function ExchangeMediaPreview({ exchange, className = "" }) {
+function ExchangeMediaPreview({
+  exchange,
+  className = "",
+  enableExpandedViewer = true,
+  videoControls = true,
+  mediaFit = "contain",
+}) {
   const mediaItems = useMemo(() => getExchangeMediaItems(exchange), [exchange]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [mediaUrls, setMediaUrls] = useState({});
@@ -961,7 +967,15 @@ function ExchangeMediaPreview({ exchange, className = "" }) {
   };
 
   const openMediaViewer = () => {
-    if (!activeMedia || !activeMediaUrl || hasActiveError) return;
+    if (
+      !enableExpandedViewer ||
+      !activeMedia ||
+      !activeMediaUrl ||
+      hasActiveError
+    ) {
+      return;
+    }
+
     setExpandedMediaIndex(activeIndex);
   };
 
@@ -999,22 +1013,47 @@ function ExchangeMediaPreview({ exchange, className = "" }) {
       <div
         className={`exchangeMediaExpandButton ${isVideo ? "isVideo" : "isImage"}`}
         style={mediaFrameStyle}
-        role={isVideo ? undefined : "button"}
-        tabIndex={isVideo ? undefined : 0}
-        onClick={isVideo ? undefined : openMediaViewer}
+        role={
+          !isVideo && enableExpandedViewer
+            ? "button"
+            : undefined
+        }
+        tabIndex={
+          !isVideo && enableExpandedViewer
+            ? 0
+            : undefined
+        }
+        onClick={
+          !isVideo && enableExpandedViewer
+            ? openMediaViewer
+            : undefined
+        }
         onKeyDown={(event) => {
-          if (!isVideo && (event.key === "Enter" || event.key === " ")) {
+          if (
+            !isVideo &&
+            enableExpandedViewer &&
+            (event.key === "Enter" ||
+              event.key === " ")
+          ) {
             event.preventDefault();
             openMediaViewer();
           }
         }}
-        aria-label={isVideo ? undefined : "Ampliar imagen de la publicación"}
+        aria-label={
+          !isVideo && enableExpandedViewer
+            ? "Ampliar imagen de la publicación"
+            : undefined
+        }
       >
         {isVideo ? (
           <video
             className="exchangeMediaPreview exchangeVideoPreview"
-            style={mediaContentStyle}
-            controls
+            style={{
+              ...mediaContentStyle,
+              objectFit: mediaFit,
+            }}
+            controls={videoControls}
+            muted={!videoControls}
             controlsList="nodownload"
             playsInline
             preload="metadata"
@@ -1045,7 +1084,10 @@ function ExchangeMediaPreview({ exchange, className = "" }) {
               alt={exchange.offerTitle || "Publicación"}
               loading="eager"
               decoding="async"
-              style={mediaContentStyle}
+              style={{
+                ...mediaContentStyle,
+                objectFit: mediaFit,
+              }}
               onError={() =>
                 setMediaErrors((current) => ({
                   ...current,
@@ -1107,7 +1149,8 @@ function ExchangeMediaPreview({ exchange, className = "" }) {
         })}
       </div>
 
-      {expandedMediaIndex !== null && (
+      {enableExpandedViewer &&
+        expandedMediaIndex !== null && (
         <MediaViewerModal
           mediaItems={mediaItems}
           initialIndex={expandedMediaIndex}
@@ -2199,173 +2242,74 @@ function Dashboard() {
           >
             <div className="dashboardSuggestionsGrid">
               {discoverySuggestions.map((suggestion) => {
-              const suggestionMediaCount = getMediaCount(suggestion);
-              const suggestionIsService = isServiceExchange(suggestion);
-              const suggestionIsLicensed = hasLicensedCredential(suggestion);
-              const suggestionDistance = getPanelDistanceBadgeText(
-                suggestion,
-                userProfileData,
-                filters.radius
-              );
-              const suggestionIsFavorite = favoriteIds.includes(suggestion.id);
+                const suggestionDistance =
+                  getPanelDistanceBadgeText(
+                    suggestion,
+                    userProfileData,
+                    filters.radius
+                  );
 
-              return (
-                <article
-                  className="dashboardSuggestionCard"
-                  key={suggestion.id}
-                >
-                  <div className="dashboardSuggestionMediaWrap">
-                    <ExchangeMediaPreview
-                      exchange={suggestion}
-                      className="dashboardSuggestionMedia"
-                    />
+                const openPublicationDetail = () => {
+                  navigate(
+                    `/publicacion/${suggestion.id}`
+                  );
+                };
 
-                    <div className="dashboardSuggestionTopBadges">
-                      <span className="dashboardSuggestionBadge">Sugerencia</span>
+                return (
+                  <article
+                    className="dashboardSuggestionCard dashboardSuggestionCompactCard"
+                    key={suggestion.id}
+                    role="link"
+                    tabIndex={0}
+                    aria-label={`Ver publicación ${
+                      suggestion.offerTitle ||
+                      "sin título"
+                    }`}
+                    onClick={openPublicationDetail}
+                    onKeyDown={(event) => {
+                      if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                      ) {
+                        event.preventDefault();
+                        openPublicationDetail();
+                      }
+                    }}
+                  >
+                    <div className="dashboardSuggestionMediaWrap dashboardSuggestionCompactMediaWrap">
+                      <ExchangeMediaPreview
+                        exchange={suggestion}
+                        className="dashboardSuggestionMedia"
+                        enableExpandedViewer={false}
+                        videoControls={false}
+                        mediaFit="cover"
+                      />
                     </div>
 
-                    <button
-                      type="button"
-                      className={`dashboardSuggestionFavoriteButton ${
-                        suggestionIsFavorite ? "isFavorite" : ""
-                      }`}
-                      disabled={favoriteLoadingId === suggestion.id}
-                      style={{
-                        ...favoriteButtonStyle,
-                        cursor:
-                          favoriteLoadingId === suggestion.id
-                            ? "wait"
-                            : "pointer",
-                        opacity:
-                          favoriteLoadingId === suggestion.id ? 0.72 : 1,
-                        background: suggestionIsFavorite
-                          ? "#ff5d76"
-                          : "rgba(255, 255, 255, 0.94)",
-                        color: suggestionIsFavorite ? "#ffffff" : "#13243d",
-                      }}
-                      aria-pressed={suggestionIsFavorite}
-                      aria-label={
-                        favoriteLoadingId === suggestion.id
-                          ? "Guardando favorito"
-                          : suggestionIsFavorite
-                            ? "Quitar de favoritos"
-                            : "Agregar a favoritos"
-                      }
-                      title={
-                        favoriteLoadingId === suggestion.id
-                          ? "Guardando..."
-                          : suggestionIsFavorite
-                            ? "Quitar de favoritos"
-                            : "Agregar a favoritos"
-                      }
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleToggleFavorite(suggestion.id);
-                      }}
-                    >
-                      <span aria-hidden="true">
-                        {suggestionIsFavorite ? "♥" : "♡"}
-                      </span>
-                    </button>
-                  </div>
+                    <div className="dashboardSuggestionBody dashboardSuggestionCompactBody">
+                      <h3>
+                        {suggestion.offerTitle ||
+                          "Publicación"}
+                      </h3>
 
-                  <div className="dashboardSuggestionBody">
-                    <div className="dashboardSuggestionMetaRow">
-                      <span className="dashboardSuggestionCategory">
-                        {suggestion.offerCategory || "Categoría"}
-                      </span>
-
-                      {suggestionIsService && suggestionIsLicensed && (
-                        <span className="dashboardSuggestionLicensed">
-                          Matriculado
-                        </span>
-                      )}
-                    </div>
-
-                    <h3>{suggestion.offerTitle || "Publicación"}</h3>
-
-                    <p className="dashboardSuggestionDescription">
-                      {suggestion.offerDescription ||
-                        "El usuario no agregó una descripción detallada."}
-                    </p>
-
-                    <div className="dashboardSuggestionInfoGrid">
-                      <div>
-                        <span>{suggestionIsService ? "Servicio" : "Estado"}</span>
+                      <div className="dashboardSuggestionCompactSearch">
+                        <span>Busca</span>
                         <strong>
-                          {suggestionIsService
-                            ? getServiceTypeLabel(suggestion.offerServiceType)
-                            : suggestion.offerState || "No indicado"}
+                          {suggestion.searchTitle ||
+                            "No indicado"}
                         </strong>
                       </div>
 
-                      <div>
-                        <span>Busca</span>
-                        <strong>{suggestion.searchTitle || "No indicado"}</strong>
-                        {suggestion.searchCategory === "Servicios" && (
-                          <small>
-                            {getServiceTypeLabel(suggestion.searchServiceType)}
-                          </small>
-                        )}
+                      <div className="dashboardSuggestionCompactDistance">
+                        <span aria-hidden="true">⌖</span>
+                        <strong>
+                          {suggestionDistance}
+                        </strong>
                       </div>
                     </div>
-
-                    <div className="dashboardSuggestionLocation">
-                      <span>⌖</span>
-                      <p>
-                        <strong>{getExchangeLocationLabel(suggestion)}</strong>
-                        <small>{suggestionDistance}</small>
-                      </p>
-                    </div>
-
-                    <div className="dashboardSuggestionActions">
-                      <button
-                        type="button"
-                        className={`likeButton dashboardSuggestionProposalButton ${
-                          activeUserExchanges.length === 0
-                            ? "requiresPublication"
-                            : ""
-                        }`.trim()}
-                        disabled={interestLoading || Boolean(swipeDirection)}
-                        onClick={() => handleSuggestionInterest(suggestion)}
-                        title={
-                          activeUserExchanges.length === 0
-                            ? "Para enviar una propuesta primero necesitás publicar qué ofrecés a cambio."
-                            : "Enviar una propuesta de intercambio"
-                        }
-                      >
-                        {activeUserExchanges.length === 0
-                          ? "Crear publicación"
-                          : interestLoading &&
-                              proposalModalExchange?.id === suggestion.id
-                            ? "Enviando..."
-                            : "Enviar propuesta"}
-                      </button>
-
-                      <button
-                        type="button"
-                        className="dashboardSuggestionDismissButton"
-                        disabled={interestLoading || Boolean(swipeDirection)}
-                        onClick={() => dismissSuggestion(suggestion.id, "left")}
-                      >
-                        No me interesa
-                      </button>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="reportPublicationButton dashboardSuggestionReportButton"
-                      disabled={reportLoadingId === suggestion.id}
-                      onClick={() => openReportModal(suggestion)}
-                    >
-                      {reportLoadingId === suggestion.id
-                        ? "Enviando denuncia..."
-                        : "Denunciar publicación"}
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
+                  </article>
+                );
+              })}
             </div>
 
             {panelFeedAdvertisements.length > 0 && (
