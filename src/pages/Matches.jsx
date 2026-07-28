@@ -1070,6 +1070,138 @@ function MatchDetailModal({
   );
 }
 
+
+function getMatchDisplayKey(match) {
+  const otherExchangeId = String(
+    match?.otherExchange?.id || ""
+  ).trim();
+
+  if (otherExchangeId) {
+    return otherExchangeId;
+  }
+
+  return String(match?.id || "").trim();
+}
+
+function buildDisplayMatchGroups(matches) {
+  const groupsByPublication = new Map();
+
+  matches.forEach((match) => {
+    const key = getMatchDisplayKey(match);
+
+    if (!key) return;
+
+    const currentGroup =
+      groupsByPublication.get(key) || [];
+
+    currentGroup.push(match);
+    groupsByPublication.set(
+      key,
+      currentGroup
+    );
+  });
+
+  return Array.from(
+    groupsByPublication.entries()
+  )
+    .map(([key, groupedMatches]) => {
+      const representative = [
+        ...groupedMatches,
+      ].sort((firstMatch, secondMatch) => {
+        if (
+          secondMatch.score !==
+          firstMatch.score
+        ) {
+          return (
+            secondMatch.score -
+            firstMatch.score
+          );
+        }
+
+        return (
+          getMediaCount(
+            secondMatch.otherExchange
+          ) -
+          getMediaCount(
+            firstMatch.otherExchange
+          )
+        );
+      })[0];
+
+      return {
+        key,
+        representative,
+        matches: groupedMatches,
+      };
+    })
+    .sort((firstGroup, secondGroup) => {
+      const firstMatch =
+        firstGroup.representative;
+      const secondMatch =
+        secondGroup.representative;
+
+      if (
+        secondMatch.score !==
+        firstMatch.score
+      ) {
+        return (
+          secondMatch.score -
+          firstMatch.score
+        );
+      }
+
+      return (
+        getMediaCount(
+          secondMatch.otherExchange
+        ) -
+        getMediaCount(
+          firstMatch.otherExchange
+        )
+      );
+    });
+}
+
+function getMatchGroupInterestState(
+  group,
+  interestStatus
+) {
+  if (!group?.matches?.length) {
+    return "";
+  }
+
+  if (
+    group.matches.some(
+      (match) =>
+        interestStatus[match.id] ===
+        "loading"
+    )
+  ) {
+    return "loading";
+  }
+
+  if (
+    group.matches.some(
+      (match) =>
+        interestStatus[match.id] ===
+        "sent"
+    )
+  ) {
+    return "sent";
+  }
+
+  if (
+    group.matches.some(
+      (match) =>
+        interestStatus[match.id] ===
+        "error"
+    )
+  ) {
+    return "error";
+  }
+
+  return "";
+}
+
 function Matches() {
   const navigate = useNavigate();
   const { user, authLoading } = useAuth();
@@ -1081,8 +1213,8 @@ function Matches() {
   const [error, setError] = useState("");
   const [interestStatus, setInterestStatus] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
-  const [selectedMatch, setSelectedMatch] = useState(null);
-  const [proposalModalMatch, setProposalModalMatch] = useState(null);
+  const [selectedMatchGroup, setSelectedMatchGroup] = useState(null);
+  const [proposalModalMatchGroup, setProposalModalMatchGroup] = useState(null);
   const [proposalError, setProposalError] = useState("");
   const [dismissedMatchIds, setDismissedMatchIds] = useState([]);
   const [reportLoadingId, setReportLoadingId] = useState("");
@@ -1190,14 +1322,14 @@ function Matches() {
     );
   }, [activeMyExchanges, allExchanges, user, dismissedMatchIds]);
 
-  const sortedMatches = useMemo(() => {
-    return [...matches].sort((firstMatch, secondMatch) => {
-      if (secondMatch.score !== firstMatch.score) {
-        return secondMatch.score - firstMatch.score;
-      }
-
-      return getMediaCount(secondMatch.otherExchange) - getMediaCount(firstMatch.otherExchange);
-    });
+  /*
+    Una misma publicación externa puede coincidir con varias
+    publicaciones propias. Para evitar repetirla en pantalla,
+    agrupamos por otherExchange.id y usamos como representante
+    el match con mayor compatibilidad.
+  */
+  const displayMatchGroups = useMemo(() => {
+    return buildDisplayMatchGroups(matches);
   }, [matches]);
 
   const handleToggleFavorite = async (exchange) => {
@@ -1243,31 +1375,38 @@ function Matches() {
     }
   };
 
-  const handleInterest = (match) => {
+  const handleInterest = (group) => {
     if (!user) {
       navigate("/login");
       return;
     }
 
-    if (!match) return;
+    if (!group?.representative) return;
 
     setError("");
     setSuccessMessage("");
     setProposalError("");
-    setProposalModalMatch(match);
+    setProposalModalMatchGroup(group);
   };
 
   const closeProposalModal = () => {
-    const modalMatchId = proposalModalMatch?.id;
+    const groupState =
+      getMatchGroupInterestState(
+        proposalModalMatchGroup,
+        interestStatus
+      );
 
-    if (modalMatchId && interestStatus[modalMatchId] === "loading") return;
+    if (groupState === "loading") return;
 
-    setProposalModalMatch(null);
+    setProposalModalMatchGroup(null);
     setProposalError("");
   };
 
   const handleSendProposal = async (draft) => {
-    if (!user || !proposalModalMatch) return;
+    const representativeMatch =
+      proposalModalMatchGroup?.representative;
+
+    if (!user || !representativeMatch) return;
 
     setError("");
     setSuccessMessage("");
@@ -1275,26 +1414,34 @@ function Matches() {
 
     setInterestStatus((current) => ({
       ...current,
-      [proposalModalMatch.id]: "loading",
+      [representativeMatch.id]: "loading",
     }));
 
     try {
       const result = await createExchangeProposal(user, {
         ...draft,
-        myExchange: draft.myExchange || proposalModalMatch.myExchange,
-        otherExchange: proposalModalMatch.otherExchange,
-        score: draft.score ?? proposalModalMatch.score,
-        reasons: draft.reasons?.length ? draft.reasons : proposalModalMatch.reasons || [],
+        myExchange:
+          draft.myExchange ||
+          representativeMatch.myExchange,
+        otherExchange:
+          representativeMatch.otherExchange,
+        score:
+          draft.score ??
+          representativeMatch.score,
+        reasons: draft.reasons?.length
+          ? draft.reasons
+          : representativeMatch.reasons ||
+            [],
         source: "matches_page",
       });
 
       setInterestStatus((current) => ({
         ...current,
-        [proposalModalMatch.id]: "sent",
+        [representativeMatch.id]: "sent",
       }));
 
-      setProposalModalMatch(null);
-      setSelectedMatch(null);
+      setProposalModalMatchGroup(null);
+      setSelectedMatchGroup(null);
       setSuccessMessage(
         result.alreadyExists
           ? "Ya habías enviado una propuesta para este intercambio."
@@ -1305,26 +1452,51 @@ function Matches() {
 
       setInterestStatus((current) => ({
         ...current,
-        [proposalModalMatch.id]: "error",
+        [representativeMatch.id]: "error",
       }));
 
       setProposalError(
-        err?.message || "No pudimos enviar la propuesta. Intentá nuevamente."
+        err?.message ||
+          "No pudimos enviar la propuesta. Intentá nuevamente."
       );
     }
   };
 
-  const handleDismissMatch = (match) => {
-    if (!user?.uid || !match?.id) return;
+  const handleDismissMatchGroup = (group) => {
+    if (
+      !user?.uid ||
+      !group?.matches?.length
+    ) {
+      return;
+    }
+
+    const groupedMatchIds = group.matches
+      .map((match) => match?.id)
+      .filter(Boolean);
+
+    if (groupedMatchIds.length === 0) {
+      return;
+    }
 
     const updatedDismissedIds = Array.from(
-      new Set([...dismissedMatchIds, match.id])
+      new Set([
+        ...dismissedMatchIds,
+        ...groupedMatchIds,
+      ])
     );
 
-    setDismissedMatchIds(updatedDismissedIds);
-    saveDismissedMatchIds(user.uid, updatedDismissedIds);
-    setSelectedMatch(null);
-    setSuccessMessage("Ocultamos este match de tus resultados.");
+    setDismissedMatchIds(
+      updatedDismissedIds
+    );
+    saveDismissedMatchIds(
+      user.uid,
+      updatedDismissedIds
+    );
+    setSelectedMatchGroup(null);
+    setProposalModalMatchGroup(null);
+    setSuccessMessage(
+      "Ocultamos esta publicación de tus matches."
+    );
     setError("");
   };
 
@@ -1441,7 +1613,7 @@ function Matches() {
 
         <article>
           <span>Matches encontrados</span>
-          <strong>{sortedMatches.length}</strong>
+          <strong>{displayMatchGroups.length}</strong>
         </article>
       </section>
 
@@ -1461,7 +1633,7 @@ function Matches() {
             </Link>
           </div>
         </section>
-      ) : sortedMatches.length === 0 ? (
+      ) : displayMatchGroups.length === 0 ? (
         <section className="emptyState matchesEmptyState">
           <div>
             <div className="emptyLogoIcon">
@@ -1479,19 +1651,32 @@ function Matches() {
         </section>
       ) : (
         <section className="modernMatchesGrid">
-          {sortedMatches.map((match, index) => {
-            const currentInterestState = interestStatus[match.id];
-            const otherExchangeId = match.otherExchange?.id;
-            const isFavorite = favoriteIds.includes(otherExchangeId);
+          {displayMatchGroups.map((group, index) => {
+            const match = group.representative;
+            const currentInterestState =
+              getMatchGroupInterestState(
+                group,
+                interestStatus
+              );
+            const otherExchangeId =
+              match.otherExchange?.id;
+            const isFavorite =
+              favoriteIds.includes(
+                otherExchangeId
+              );
             const isFavoriteLoading =
-              favoriteLoadingId === otherExchangeId;
+              favoriteLoadingId ===
+              otherExchangeId;
             const shouldInsertAdvertisement =
               matchesAdvertisements.length > 0 &&
               index ===
-                Math.min(2, sortedMatches.length - 1);
+                Math.min(
+                  2,
+                  displayMatchGroups.length - 1
+                );
 
             return (
-              <Fragment key={match.id}>
+              <Fragment key={group.key}>
                 <article className="modernMatchCard">
                 <div className="modernMatchMediaWrap">
                   <MatchMediaCarousel exchange={match.otherExchange} />
@@ -1586,7 +1771,7 @@ function Matches() {
                     <button
                       type="button"
                       className="secondaryButton"
-                      onClick={() => setSelectedMatch(match)}
+                      onClick={() => setSelectedMatchGroup(group)}
                     >
                       Ver detalle
                     </button>
@@ -1594,7 +1779,7 @@ function Matches() {
                     <button
                       type="button"
                       className="dangerButton"
-                      onClick={() => handleDismissMatch(match)}
+                      onClick={() => handleDismissMatchGroup(group)}
                     >
                       No me interesa
                     </button>
@@ -1606,7 +1791,7 @@ function Matches() {
                         currentInterestState === "loading" ||
                         currentInterestState === "sent"
                       }
-                      onClick={() => handleInterest(match)}
+                      onClick={() => handleInterest(group)}
                     >
                       {currentInterestState === "loading"
                         ? "Enviando..."
@@ -1643,36 +1828,78 @@ function Matches() {
       )}
 
       <MatchDetailModal
-        match={selectedMatch}
-        onClose={() => setSelectedMatch(null)}
-        onInterest={handleInterest}
-        interestState={selectedMatch ? interestStatus[selectedMatch.id] : ""}
-        onDismiss={handleDismissMatch}
+        match={
+          selectedMatchGroup?.representative ||
+          null
+        }
+        onClose={() =>
+          setSelectedMatchGroup(null)
+        }
+        onInterest={() =>
+          handleInterest(
+            selectedMatchGroup
+          )
+        }
+        interestState={
+          getMatchGroupInterestState(
+            selectedMatchGroup,
+            interestStatus
+          )
+        }
+        onDismiss={() =>
+          handleDismissMatchGroup(
+            selectedMatchGroup
+          )
+        }
         onReport={openReportModal}
         reportLoading={
-          selectedMatch
-            ? reportLoadingId === selectedMatch.otherExchange.id
+          selectedMatchGroup
+            ? reportLoadingId ===
+              selectedMatchGroup
+                .representative
+                .otherExchange.id
             : false
         }
         isFavorite={
-          selectedMatch
-            ? favoriteIds.includes(selectedMatch.otherExchange.id)
+          selectedMatchGroup
+            ? favoriteIds.includes(
+                selectedMatchGroup
+                  .representative
+                  .otherExchange.id
+              )
             : false
         }
         favoriteLoading={
-          selectedMatch
-            ? favoriteLoadingId === selectedMatch.otherExchange.id
+          selectedMatchGroup
+            ? favoriteLoadingId ===
+              selectedMatchGroup
+                .representative
+                .otherExchange.id
             : false
         }
-        onToggleFavorite={handleToggleFavorite}
+        onToggleFavorite={
+          handleToggleFavorite
+        }
       />
 
       <ExchangeProposalModal
-        targetExchange={proposalModalMatch?.otherExchange || null}
+        targetExchange={
+          proposalModalMatchGroup
+            ?.representative
+            ?.otherExchange || null
+        }
         myExchanges={activeMyExchanges}
-        defaultMatch={proposalModalMatch}
+        defaultMatch={
+          proposalModalMatchGroup
+            ?.representative || null
+        }
         userId={user?.uid}
-        loading={proposalModalMatch ? interestStatus[proposalModalMatch.id] === "loading" : false}
+        loading={
+          getMatchGroupInterestState(
+            proposalModalMatchGroup,
+            interestStatus
+          ) === "loading"
+        }
         error={proposalError}
         onClose={closeProposalModal}
         onSubmit={handleSendProposal}
