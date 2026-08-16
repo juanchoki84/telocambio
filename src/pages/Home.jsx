@@ -86,6 +86,11 @@ const categories = [
     icon: Gamepad2,
   },
   {
+    label: "Instrumentos musicales",
+    hint: "Guitarras, teclados, percusión y accesorios",
+    icon: Guitar,
+  },
+  {
     label: "Bebés",
     hint: "Artículos infantiles y primeras etapas",
     icon: Baby,

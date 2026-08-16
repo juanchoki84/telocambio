@@ -1,0 +1,474 @@
+/* =========================================================
+   PublishExchange.css
+   Responsive aislado para Publicar / Editar publicación.
+   No modifica el diseño de escritorio ni otras pantallas.
+   ========================================================= */
+
+.publishExchangePage {
+  overflow-x: hidden;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 900px) {
+  .publishExchangePage .formPageHeader,
+  .publishExchangePage .exchangeFormCard {
+    width: calc(100% - 24px);
+  }
+
+  .publishExchangePage .formPageHeader {
+    margin-top: 28px;
+  }
+
+  .publishExchangePage .formPageHeader h1 {
+    max-width: 720px;
+    margin-top: 12px;
+    font-size: clamp(34px, 7vw, 48px);
+    line-height: 1;
+  }
+
+  .publishExchangePage .formPageHeader p {
+    max-width: 720px;
+    margin-top: 14px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .publishExchangePage .exchangeFormCard {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 26px;
+  }
+
+  .publishExchangePage .exchangeForm {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .publishExchangePage .exchangeForm > * {
+    min-width: 0;
+  }
+
+  /*
+    "Qué buscás" y "Qué ofrecés" se convierten en bloques claros.
+    Esto facilita mucho recorrer el formulario desde el teléfono.
+  */
+  .publishExchangePage .formBlock {
+    min-width: 0;
+    gap: 14px;
+    padding: 20px;
+    border: 1px solid #e4ebf4;
+    border-radius: 24px;
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(0, 198, 167, 0.07),
+        transparent 38%
+      ),
+      #ffffff;
+  }
+
+  .publishExchangePage .formBlock h2 {
+    margin: 0 0 2px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #edf1f6;
+    color: #101828;
+    font-size: 23px;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  .publishExchangePage .exchangeLocationSection,
+  .publishExchangePage .mediaUploadSection {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .publishExchangePage .mediaUploadHeader,
+  .publishExchangePage .exchangeLocationHeader {
+    margin-bottom: 15px;
+  }
+}
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 640px) {
+  .publishExchangePage .formPageHeader,
+  .publishExchangePage .exchangeFormCard {
+    width: calc(100% - 20px);
+  }
+
+  .publishExchangePage .formPageHeader {
+    margin-top: 20px;
+  }
+
+  .publishExchangePage .formPageHeader .badge {
+    padding: 7px 10px;
+    font-size: 10px;
+    letter-spacing: 0.09em;
+  }
+
+  .publishExchangePage .formPageHeader h1 {
+    margin-top: 11px;
+    font-size: clamp(30px, 9vw, 38px);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .publishExchangePage .formPageHeader p {
+    margin: 11px 0 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+
+  /*
+    En teléfono evitamos una gran "tarjeta dentro de tarjeta".
+    El contenedor principal queda liviano y cada sección conserva
+    su propia tarjeta visual.
+  */
+  .publishExchangePage .exchangeFormCard {
+    margin-top: 16px;
+    margin-bottom: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .publishExchangePage .exchangeForm {
+    gap: 12px;
+  }
+
+  .publishExchangePage .formBlock,
+  .publishExchangePage .exchangeLocationSection,
+  .publishExchangePage .mediaUploadSection {
+    padding: 16px;
+    border-radius: 20px;
+    box-shadow: 0 10px 26px rgba(19, 34, 56, 0.045);
+  }
+
+  .publishExchangePage .formBlock {
+    gap: 12px;
+  }
+
+  .publishExchangePage .formBlock h2 {
+    padding-bottom: 11px;
+    font-size: 21px;
+  }
+
+  /*
+    16px evita que Safari/iOS haga zoom automático al enfocar inputs.
+    52px da un área cómoda para tocar.
+  */
+  .publishExchangePage .exchangeForm label,
+  .publishExchangePage .locationPicker label {
+    min-width: 0;
+    gap: 7px;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .publishExchangePage .exchangeForm input,
+  .publishExchangePage .exchangeForm select,
+  .publishExchangePage .exchangeForm textarea,
+  .publishExchangePage .locationPicker input,
+  .publishExchangePage .locationPicker select {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .publishExchangePage .exchangeForm input,
+  .publishExchangePage .exchangeForm select,
+  .publishExchangePage .locationPicker input,
+  .publishExchangePage .locationPicker select {
+    min-height: 52px;
+    height: 52px;
+    padding: 0 14px;
+    border-radius: 15px;
+  }
+
+  .publishExchangePage .exchangeForm textarea {
+    min-height: 104px;
+    padding: 13px 14px;
+    border-radius: 15px;
+    line-height: 1.5;
+  }
+
+  .publishExchangePage .serviceOptionsBox {
+    gap: 12px;
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .publishExchangePage .serviceOptionsBox p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .publishExchangePage .serviceCheckRow {
+    min-height: 52px;
+    padding: 12px 13px;
+    align-items: center;
+    border-radius: 15px;
+    font-size: 13px !important;
+  }
+
+  .publishExchangePage .serviceCheckRow input {
+    width: 20px !important;
+    height: 20px !important;
+    flex-basis: 20px;
+    margin: 0;
+  }
+
+  /* ---------- Ubicación ---------- */
+
+  .publishExchangePage .exchangeLocationHeader {
+    margin-bottom: 12px;
+  }
+
+  .publishExchangePage .exchangeLocationHeader h2,
+  .publishExchangePage .mediaUploadHeader h2 {
+    margin-top: 6px;
+    font-size: 21px;
+    line-height: 1.12;
+  }
+
+  .publishExchangePage .exchangeLocationHeader p,
+  .publishExchangePage .mediaUploadHeader p {
+    margin-top: 7px;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .publishExchangePage .profileLocationDefaultBox,
+  .publishExchangePage .profileLocationMissingBox {
+    margin-bottom: 12px;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    border-radius: 18px;
+  }
+
+  .publishExchangePage .profileLocationDefaultBox strong,
+  .publishExchangePage .profileLocationMissingBox strong {
+    margin-top: 6px;
+    font-size: 17px;
+    line-height: 1.25;
+  }
+
+  .publishExchangePage .profileLocationDefaultBox p,
+  .publishExchangePage .profileLocationMissingBox p {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .publishExchangePage .profileLocationActions,
+  .publishExchangePage .profileLocationButton,
+  .publishExchangePage .profileLocationMissingBox .secondaryActionLink {
+    width: 100%;
+  }
+
+  .publishExchangePage .profileLocationButton,
+  .publishExchangePage .profileLocationMissingBox .secondaryActionLink {
+    min-height: 46px;
+    padding: 10px 13px;
+  }
+
+  .publishExchangePage .customLocationPickerBox {
+    padding: 13px;
+    gap: 10px;
+    border-radius: 18px;
+  }
+
+  /*
+    El selector de localidad deja de intentar mostrar 3 columnas.
+    Cada control usa todo el ancho disponible.
+  */
+  .publishExchangePage .locationPicker {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr !important;
+    gap: 11px;
+  }
+
+  .publishExchangePage .locationPicker > *,
+  .publishExchangePage .locationPicker .locationHelperText,
+  .publishExchangePage .locationPicker .selectedLocationBox,
+  .publishExchangePage .locationPicker .errorText,
+  .publishExchangePage .locationPicker .locationError,
+  .publishExchangePage .locationPicker .locationResultsBox {
+    min-width: 0;
+    grid-column: 1 !important;
+  }
+
+  .publishExchangePage .selectedLocationBox {
+    padding: 13px;
+    border-radius: 16px;
+  }
+
+  .publishExchangePage .selectedLocationBox strong {
+    font-size: 16px;
+  }
+
+  .publishExchangePage .locationHelperText {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(0, 198, 167, 0.08);
+    color: #526174;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  /* ---------- Multimedia ---------- */
+
+  .publishExchangePage .mediaUploadHeader {
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .publishExchangePage .clearMediaButton {
+    width: 100%;
+    min-height: 44px;
+    padding: 9px 12px;
+  }
+
+  .publishExchangePage .mediaDropzone {
+    min-height: 138px;
+    padding: 18px 14px;
+    gap: 7px;
+    border-radius: 18px;
+  }
+
+  .publishExchangePage .mediaDropzoneIcon {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+    font-size: 24px;
+  }
+
+  .publishExchangePage .mediaDropzone strong {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .publishExchangePage .mediaDropzone small {
+    max-width: 280px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .publishExchangePage .mediaPreviewGroup {
+    margin-top: 14px;
+  }
+
+  /*
+    Dos miniaturas por fila aprovechan mejor la pantalla del teléfono.
+    Si el equipo es extremadamente angosto, más abajo pasa a una sola.
+  */
+  .publishExchangePage .mediaPreviewGrid {
+    width: 100%;
+    margin-top: 9px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+    gap: 9px;
+  }
+
+  .publishExchangePage .mediaPreviewCard {
+    min-width: 0;
+    max-width: none;
+    border-radius: 17px;
+  }
+
+  .publishExchangePage .mediaPreviewCard img,
+  .publishExchangePage .mediaPreviewCard video {
+    height: 125px;
+  }
+
+  .publishExchangePage .mediaPreviewInfo {
+    min-width: 0;
+    padding: 9px;
+  }
+
+  .publishExchangePage .mediaPreviewInfo span {
+    font-size: 9px;
+  }
+
+  .publishExchangePage .mediaPreviewInfo strong {
+    min-width: 0;
+    font-size: 11px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .publishExchangePage .removeMediaButton {
+    top: 7px;
+    right: 7px;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  .publishExchangePage .uploadProgressBox {
+    margin-top: 13px;
+    padding: 13px;
+    border-radius: 16px;
+  }
+
+  .publishExchangePage .uploadProgressBox > div {
+    font-size: 12px;
+  }
+
+  /* ---------- Errores y acción final ---------- */
+
+  .publishExchangePage .exchangeForm > .errorText {
+    width: 100%;
+    margin: 0;
+    padding: 12px 13px;
+    border-radius: 16px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .publishExchangePage .exchangeForm > .primaryButton.fullButton {
+    width: 100%;
+    min-height: 54px;
+    margin-top: 2px;
+    border-radius: 17px;
+    font-size: 15px;
+    box-shadow: 0 14px 30px rgba(19, 34, 56, 0.18);
+  }
+}
+
+/* ---------- Teléfonos muy angostos ---------- */
+
+@media (max-width: 380px) {
+  .publishExchangePage .formPageHeader,
+  .publishExchangePage .exchangeFormCard {
+    width: calc(100% - 16px);
+  }
+
+  .publishExchangePage .formBlock,
+  .publishExchangePage .exchangeLocationSection,
+  .publishExchangePage .mediaUploadSection {
+    padding: 14px;
+  }
+
+  .publishExchangePage .mediaPreviewGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .publishExchangePage .mediaPreviewCard img,
+  .publishExchangePage .mediaPreviewCard video {
+    height: 180px;
+  }
+}

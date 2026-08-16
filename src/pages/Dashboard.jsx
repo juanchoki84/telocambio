@@ -39,6 +39,7 @@ const CATEGORIES = [
   "Mascotas",
   "Moda",
   "Juegos y juguetes",
+  "Instrumentos musicales",
   "Bebés",
   "Belleza y cuidado personal",
   "Servicios",

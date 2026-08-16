@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import AppNavbar from "../components/AppNavbar";
+import "./PublishExchange.css";
 import LocationPicker from "../components/LocationPicker";
 import {
   createExchange,
@@ -34,6 +35,7 @@ const categories = [
   "Mascotas",
   "Moda",
   "Juegos y juguetes",
+  "Instrumentos musicales",
   "Bebés",
   "Belleza y cuidado personal",
   SERVICE_CATEGORY,
@@ -770,7 +772,7 @@ function PublishExchange() {
   }
 
   return (
-    <main className="dashboardPage">
+    <main className="dashboardPage publishExchangePage">
       <AppNavbar />
 
       <section className="formPageHeader">
