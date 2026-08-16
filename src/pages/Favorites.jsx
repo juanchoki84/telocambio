@@ -342,7 +342,7 @@ function MediaViewerModal({
         onClick={onClose}
       />
 
-      <div className="mediaViewerDialog favoriteMediaViewerDialog">
+      <div className="mediaViewerDialog favoriteMediaViewerDialog favoriteMediaViewerFullscreenDialog">
         <div className="mediaViewerHeader">
           <div>
             <span className="miniLabel">Publicación favorita</span>

@@ -770,3 +770,216 @@
   }
 }
 
+/* =========================================================
+   FAVORITOS - VISOR FULLSCREEN V2
+   Igual criterio que PublicationDetail:
+   el archivo SIEMPRE entra completo dentro del viewport.
+   ========================================================= */
+
+.favoriteMediaViewerOverlay {
+  padding: 0 !important;
+  background: #07111f !important;
+}
+
+.favoriteMediaViewerOverlay .mediaViewerBackdrop {
+  background: #07111f !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.favoriteMediaViewerFullscreenDialog {
+  position: fixed !important;
+  inset: 0 !important;
+
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-width: 100vw !important;
+  min-height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  display: grid !important;
+  grid-template-rows: 78px minmax(0, 1fr) !important;
+
+  overflow: hidden !important;
+  background: #07111f !important;
+  box-shadow: none !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerHeader {
+  position: relative;
+  z-index: 10;
+
+  width: 100%;
+  min-height: 78px;
+  height: 78px;
+
+  padding: 13px 18px;
+
+  border: 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13) !important;
+
+  background: #07111f !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerHeader .miniLabel {
+  color: #00c6a7 !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerHeader strong {
+  max-width: calc(100vw - 120px) !important;
+  color: #ffffff !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerHeader small {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerClose {
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  color: #ffffff !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerBody {
+  position: relative !important;
+
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+
+  padding: 20px 78px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  overflow: hidden !important;
+  background: #030b16 !important;
+}
+
+/*
+  Esta es la corrección clave:
+  el elemento ocupa toda el área disponible y object-fit:contain
+  decide la escala. Nunca puede recortar la imagen.
+*/
+.favoriteMediaViewerFullscreenDialog .mediaViewerBody > img {
+  width: 100% !important;
+  height: 100% !important;
+
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: block !important;
+
+  object-fit: contain !important;
+  object-position: center center !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  transform: none !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerBody > video {
+  width: 100% !important;
+  height: 100% !important;
+
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  margin: 0 !important;
+
+  object-fit: contain !important;
+  object-position: center !important;
+
+  border-radius: 0 !important;
+  background: #030b16 !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerNavButton {
+  z-index: 12 !important;
+
+  width: 46px !important;
+  height: 46px !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+
+  background: rgba(19, 34, 56, 0.86) !important;
+  color: #ffffff !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerNavButton.previous {
+  left: 14px !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerNavButton.next {
+  right: 14px !important;
+}
+
+.favoriteMediaViewerFullscreenDialog .mediaViewerDots {
+  bottom: 14px !important;
+  z-index: 12 !important;
+}
+
+@media (max-width: 700px) {
+  .favoriteMediaViewerFullscreenDialog {
+    grid-template-rows: 68px minmax(0, 1fr) !important;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerHeader {
+    min-height: 68px;
+    height: 68px;
+    padding: 10px 12px;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerHeader strong {
+    max-width: calc(100vw - 88px) !important;
+    font-size: 14px !important;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerHeader small {
+    font-size: 10px !important;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerClose {
+    width: 38px !important;
+    height: 38px !important;
+    flex-basis: 38px !important;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerBody {
+    padding: 8px !important;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerNavButton {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerNavButton.previous {
+    left: 8px !important;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerNavButton.next {
+    right: 8px !important;
+  }
+
+  .favoriteMediaViewerFullscreenDialog .mediaViewerDots {
+    bottom: 8px !important;
+  }
+}
+
