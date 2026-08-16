@@ -16341,3 +16341,315 @@ body.homeFullBackgroundPage .appFooterInner {
   }
 }
 
+/* =========================================================
+   NAVBAR RESPONSIVE - MENÚ MÓVIL ESTILO MARKETPLACE
+   Desktop conserva la navegación actual.
+   Móvil: usuario arriba + logout a la derecha + menú hamburguesa.
+   ========================================================= */
+
+.appNavbarUserIdentity {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.appNavbarMobileMenuButton {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .mainAppNavbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow: visible;
+    background: rgba(246, 248, 251, 0.98);
+    border-bottom: 1px solid rgba(219, 227, 238, 0.96);
+    box-shadow: 0 8px 24px rgba(19, 34, 56, 0.055);
+    backdrop-filter: blur(18px);
+  }
+
+  .mainAppNavbarInner {
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "user user"
+      "brand menu";
+    align-items: center;
+    gap: 0;
+  }
+
+  /*
+    Primera línea móvil:
+    identidad del usuario siempre visible a la izquierda
+    y Salir en la esquina superior derecha.
+  */
+  .mainAppNavbar .appNavbarUser {
+    grid-area: user;
+    width: 100%;
+    min-width: 0;
+    min-height: 58px;
+    padding: 8px 14px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px solid rgba(219, 227, 238, 0.82);
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .mainAppNavbar .appNavbarUserIdentity {
+    min-width: 0;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .mainAppNavbar .userAvatar {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 14px;
+    font-size: 12px;
+    box-shadow: 0 8px 20px rgba(0, 198, 167, 0.18);
+  }
+
+  .mainAppNavbar .userInfo {
+    min-width: 0;
+    flex: 1 1 auto;
+    display: grid;
+    gap: 1px;
+  }
+
+  .mainAppNavbar .userInfo span {
+    max-width: none;
+    color: var(--ink-strong);
+    font-size: 13px;
+    line-height: 1.15;
+    font-weight: 900;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mainAppNavbar .userInfo small {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.1;
+    font-weight: 800;
+  }
+
+  .mainAppNavbar .navbarLogoutButton {
+    width: auto;
+    min-width: 66px;
+    min-height: 36px;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 8px 13px;
+    border: 1px solid #dbe3ee;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 900;
+    box-shadow: 0 7px 18px rgba(19, 34, 56, 0.045);
+  }
+
+  /*
+    Segunda línea móvil:
+    marca a la izquierda + hamburguesa a la derecha.
+  */
+  .mainAppNavbar .appNavbarBrand {
+    grid-area: brand;
+    min-width: 0;
+    min-height: 62px;
+    padding: 8px 0 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 21px;
+    letter-spacing: -0.045em;
+  }
+
+  .mainAppNavbar .appNavbarBrand .logoMark {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  .appNavbarMobileMenuButton {
+    grid-area: menu;
+    width: 44px;
+    height: 44px;
+    margin-right: 12px;
+    border: 1px solid #dbe3ee;
+    border-radius: 15px;
+    padding: 0;
+    background: #ffffff;
+    display: grid;
+    place-content: center;
+    gap: 5px;
+    color: var(--ink);
+    box-shadow: 0 8px 20px rgba(19, 34, 56, 0.055);
+    transition:
+      background 160ms ease,
+      border-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .appNavbarMobileMenuButton span {
+    width: 20px;
+    height: 2px;
+    display: block;
+    border-radius: 999px;
+    background: currentColor;
+    transform-origin: center;
+    transition:
+      transform 180ms ease,
+      opacity 140ms ease;
+  }
+
+  .appNavbarMobileMenuButton.active {
+    border-color: rgba(0, 198, 167, 0.34);
+    background: rgba(0, 198, 167, 0.1);
+    color: var(--teal-dark);
+  }
+
+  .appNavbarMobileMenuButton.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .appNavbarMobileMenuButton.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .appNavbarMobileMenuButton.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /*
+    Menú desplegable:
+    ya no mostramos todos los accesos permanentemente.
+    Se abre debajo de la cabecera, como un menú mobile de marketplace.
+  */
+  .mainAppNavbar .appNavbarLinks {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: calc(100vh - 120px);
+    margin: 0;
+    padding: 10px 12px 16px;
+    display: none;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    overflow-y: auto;
+    border: 0;
+    border-top: 1px solid rgba(219, 227, 238, 0.9);
+    border-radius: 0 0 24px 24px;
+    background: rgba(255, 255, 255, 0.985);
+    box-shadow: 0 22px 48px rgba(19, 34, 56, 0.16);
+    backdrop-filter: blur(18px);
+  }
+
+  .mainAppNavbar .appNavbarLinks.mobileOpen {
+    display: grid;
+    animation: appNavbarMenuEnter 160ms ease-out both;
+  }
+
+  .mainAppNavbar .appNavbarLink {
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 9px;
+    border-radius: 14px;
+    background: transparent;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 850;
+    box-shadow: none;
+  }
+
+  .mainAppNavbar .appNavbarLink::after {
+    content: "›";
+    margin-left: auto;
+    color: #98a2b3;
+    font-size: 25px;
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  .mainAppNavbar .appNavbarLink:hover {
+    background: var(--surface-soft);
+    color: var(--ink);
+  }
+
+  .mainAppNavbar .appNavbarLink.active {
+    background: rgba(0, 198, 167, 0.1);
+    color: var(--teal-dark);
+  }
+
+  .mainAppNavbar .appNavbarLink.active::after {
+    color: var(--teal-dark);
+  }
+
+  .mainAppNavbar .navNotificationBadge {
+    min-width: 22px;
+    height: 22px;
+    padding: 0 7px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .mainAppNavbar .appNavbarUser {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mainAppNavbar .appNavbarBrand {
+    padding-left: 10px;
+    font-size: 19px;
+  }
+
+  .mainAppNavbar .appNavbarBrand .logoMark {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .appNavbarMobileMenuButton {
+    margin-right: 10px;
+  }
+
+  .mainAppNavbar .navbarLogoutButton {
+    min-width: 60px;
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+}
+
+@keyframes appNavbarMenuEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

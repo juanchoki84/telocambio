@@ -53,6 +53,7 @@ function AppNavbar() {
   const [allExchanges, setAllExchanges] = useState([]);
   const [receivedInterests, setReceivedInterests] = useState([]);
   const [userChats, setUserChats] = useState([]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isLoggedIn = Boolean(user?.uid);
 
@@ -97,6 +98,30 @@ function AppNavbar() {
     };
   }, [isLoggedIn, user?.uid]);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleResize = () => {
+      if (window.innerWidth > 760) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mobileMenuOpen]);
+
   const matchCount = useMemo(() => {
     if (!user?.uid) return 0;
 
@@ -139,8 +164,13 @@ function AppNavbar() {
   }, [userChats]);
 
   const handleLogout = async () => {
+    setMobileMenuOpen(false);
     await logoutUser();
     navigate("/");
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
   };
 
   if (!isLoggedIn) {
@@ -148,27 +178,90 @@ function AppNavbar() {
   }
 
   return (
-    <header className="mainAppNavbar">
+    <header
+      className={
+        mobileMenuOpen
+          ? "mainAppNavbar mobileMenuIsOpen"
+          : "mainAppNavbar"
+      }
+    >
       <div className="mainAppNavbarInner">
-        <Link to="/panel" className="appNavbarBrand">
+        <div className="appNavbarUser">
+          <div className="appNavbarUserIdentity">
+            <div className="userAvatar">
+              {initials}
+            </div>
+
+            <div className="userInfo">
+              <span>{userName}</span>
+              <small>Cuenta activa</small>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="navbarLogoutButton"
+            onClick={handleLogout}
+          >
+            Salir
+          </button>
+        </div>
+
+        <Link
+          to="/panel"
+          className="appNavbarBrand"
+          onClick={closeMobileMenu}
+        >
           <LogoMark />
           <span>TeLoCambio</span>
         </Link>
 
-        <nav className="appNavbarLinks">
+        <button
+          type="button"
+          className={
+            mobileMenuOpen
+              ? "appNavbarMobileMenuButton active"
+              : "appNavbarMobileMenuButton"
+          }
+          aria-label={
+            mobileMenuOpen
+              ? "Cerrar menú de navegación"
+              : "Abrir menú de navegación"
+          }
+          aria-expanded={mobileMenuOpen}
+          aria-controls="app-main-navigation"
+          onClick={() =>
+            setMobileMenuOpen((current) => !current)
+          }
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <nav
+          id="app-main-navigation"
+          className={
+            mobileMenuOpen
+              ? "appNavbarLinks mobileOpen"
+              : "appNavbarLinks"
+          }
+        >
           <NavLink
             to="/panel"
+            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
                 : "appNavbarLink"
             }
           >
-            Panel
+            <span>Panel</span>
           </NavLink>
 
           <NavLink
             to="/matches"
+            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
@@ -181,6 +274,7 @@ function AppNavbar() {
 
           <NavLink
             to="/propuestas"
+            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
@@ -193,17 +287,19 @@ function AppNavbar() {
 
           <NavLink
             to="/favoritos"
+            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
                 : "appNavbarLink"
             }
           >
-            Favoritos
+            <span>Favoritos</span>
           </NavLink>
 
           <NavLink
             to="/chats"
+            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
@@ -219,45 +315,28 @@ function AppNavbar() {
 
           <NavLink
             to="/publicar"
+            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
                 : "appNavbarLink"
             }
           >
-            Publicar
+            <span>Publicar</span>
           </NavLink>
 
           <NavLink
             to="/usuario"
+            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
                 : "appNavbarLink"
             }
           >
-            Mi perfil
+            <span>Mi perfil</span>
           </NavLink>
         </nav>
-
-        <div className="appNavbarUser">
-          <div className="userAvatar">
-            {initials}
-          </div>
-
-          <div className="userInfo">
-            <span>{userName}</span>
-            <small>Cuenta activa</small>
-          </div>
-
-          <button
-            type="button"
-            className="navbarLogoutButton"
-            onClick={handleLogout}
-          >
-            Salir
-          </button>
-        </div>
       </div>
     </header>
   );
