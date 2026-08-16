@@ -18,6 +18,7 @@ import {
 } from "firebase/storage";
 import { useAuth } from "../context/AuthContext";
 import AppNavbar from "../components/AppNavbar";
+import "./PublicationDetail.css";
 import ExchangeProposalModal from "../components/ExchangeProposalModal";
 import {
   database,
@@ -50,6 +51,49 @@ import {
 
 const DISCOVERY_DISMISSED_KEY =
   "telocambio_discovery_dismissed";
+
+
+function normalizeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+function capitalizeFirstLetter(value, fallback = "") {
+  const cleanValue = String(value || "").trim();
+
+  if (!cleanValue) return fallback;
+
+  const characters = Array.from(cleanValue);
+  const firstCharacter = characters.shift() || "";
+
+  return `${firstCharacter.toLocaleUpperCase("es-AR")}${characters.join("")}`;
+}
+
+function getPublicationCategoryTone(category) {
+  const normalizedCategory = normalizeText(category);
+
+  const categoryTones = {
+    tecnologia: "tech",
+    "hogar y muebles": "home",
+    electrodomesticos: "home",
+    herramientas: "tools",
+    construccion: "tools",
+    "deportes y fitness": "sports",
+    "accesorios para vehiculos": "vehicles",
+    mascotas: "pets",
+    moda: "fashion",
+    "juegos y juguetes": "games",
+    "instrumentos musicales": "music",
+    bebes: "baby",
+    "belleza y cuidado personal": "beauty",
+    servicios: "services",
+  };
+
+  return categoryTones[normalizedCategory] || "default";
+}
 
 function normalizeMediaCollection(value) {
   if (Array.isArray(value)) {
@@ -381,8 +425,10 @@ function PublicationFullscreenViewer({
         <div>
           <span>Publicación</span>
           <strong>
-            {publicationTitle ||
-              "Archivo ampliado"}
+            {capitalizeFirstLetter(
+              publicationTitle,
+              "Archivo ampliado"
+            )}
           </strong>
         </div>
 
@@ -427,8 +473,10 @@ function PublicationFullscreenViewer({
             className="publicationFullscreenMedia"
             src={activeUrl}
             alt={
-              publicationTitle ||
-              "Publicación ampliada"
+              capitalizeFirstLetter(
+                publicationTitle,
+                "Publicación ampliada"
+              )
             }
             decoding="async"
           />
@@ -667,8 +715,10 @@ function PublicationMediaGallery({
               className="publicationDetailMediaContent"
               src={activeUrl}
               alt={
-                publication?.offerTitle ||
-                "Publicación"
+                capitalizeFirstLetter(
+                  publication?.offerTitle,
+                  "Publicación"
+                )
               }
               decoding="async"
             />
@@ -819,8 +869,10 @@ function ReportPublicationModal({
             </span>
 
             <h3>
-              {publication.offerTitle ||
-                "Publicación"}
+              {capitalizeFirstLetter(
+                publication.offerTitle,
+                "Publicación"
+              )}
             </h3>
           </div>
 
@@ -1418,7 +1470,11 @@ function PublicationDetail() {
         <article className="publicationDetailContent">
           <div className="publicationDetailHeading">
             <div className="publicationDetailBadges">
-              <span>
+              <span
+                className={`publicationDetailCategoryBadge ${getPublicationCategoryTone(
+                  publication.offerCategory
+                )}`}
+              >
                 {publication.offerCategory ||
                   "Categoría"}
               </span>
@@ -1431,13 +1487,17 @@ function PublicationDetail() {
             </div>
 
             <h1>
-              {publication.offerTitle ||
-                "Publicación"}
+              {capitalizeFirstLetter(
+                publication.offerTitle,
+                "Publicación"
+              )}
             </h1>
 
             <p>
-              {publication.offerDescription ||
-                "El usuario no agregó una descripción detallada."}
+              {capitalizeFirstLetter(
+                publication.offerDescription,
+                "El usuario no agregó una descripción detallada."
+              )}
             </p>
           </div>
 
@@ -1475,8 +1535,10 @@ function PublicationDetail() {
               </span>
 
               <strong>
-                {publication.searchTitle ||
-                  "No indicado"}
+                {capitalizeFirstLetter(
+                  publication.searchTitle,
+                  "No indicado"
+                )}
               </strong>
 
               <small>

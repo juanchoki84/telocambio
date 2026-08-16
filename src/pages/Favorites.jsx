@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import AppNavbar from "../components/AppNavbar";
@@ -326,8 +327,14 @@ function MediaViewerModal({
     );
   };
 
-  return (
-    <div className="mediaViewerOverlay" role="dialog" aria-modal="true">
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
+    <div
+      className="mediaViewerOverlay favoriteMediaViewerOverlay"
+      role="dialog"
+      aria-modal="true"
+    >
       <button
         type="button"
         className="mediaViewerBackdrop"
@@ -335,7 +342,7 @@ function MediaViewerModal({
         onClick={onClose}
       />
 
-      <div className="mediaViewerDialog">
+      <div className="mediaViewerDialog favoriteMediaViewerDialog">
         <div className="mediaViewerHeader">
           <div>
             <span className="miniLabel">Publicación favorita</span>
@@ -422,7 +429,8 @@ function MediaViewerModal({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

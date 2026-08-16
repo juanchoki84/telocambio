@@ -1,0 +1,654 @@
+/* =========================================================
+   PublicationDetail.css
+   Detalle de publicación unificado con Home / Dashboard /
+   Matches / Favoritos.
+   ========================================================= */
+
+.publicationDetailPage {
+  overflow-x: hidden;
+}
+
+/* ---------- Barra superior ---------- */
+
+.publicationDetailPage .publicationDetailTopBar {
+  width: min(1180px, calc(100% - 32px));
+  margin: 18px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.publicationDetailPage .publicationDetailTopBar button {
+  min-height: 40px;
+  border: 1px solid #dbe3ee;
+  border-radius: 999px;
+  padding: 0 14px;
+  background: #ffffff;
+  color: #526174;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(19, 34, 56, 0.045);
+}
+
+.publicationDetailPage .publicationDetailTopBar button:hover {
+  background: #132238;
+  border-color: #132238;
+  color: #ffffff;
+}
+
+/* ---------- Layout principal ---------- */
+
+.publicationDetailPage .publicationDetailLayout {
+  width: min(1180px, calc(100% - 32px));
+  margin: 14px auto 54px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.publicationDetailPage .publicationDetailGallery,
+.publicationDetailPage .publicationDetailContent {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(223, 231, 241, 0.96);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow:
+    0 18px 38px rgba(19, 34, 56, 0.085),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
+/* ---------- Galería ---------- */
+
+.publicationDetailPage .publicationDetailMainMedia {
+  position: relative;
+  width: 100%;
+  height: 570px;
+  min-height: 570px;
+  max-height: 570px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(0, 198, 167, 0.07),
+      transparent 36%
+    ),
+    #eef3f8;
+}
+
+.publicationDetailPage .publicationDetailImageButton,
+.publicationDetailPage .publicationDetailVideoShell {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  display: block;
+  background: transparent;
+}
+
+.publicationDetailPage .publicationDetailMediaContent {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  background: transparent;
+}
+
+.publicationDetailPage .publicationDetailImageButton {
+  position: relative;
+  cursor: zoom-in;
+}
+
+.publicationDetailPage .publicationDetailExpandHint,
+.publicationDetailPage .publicationDetailExpandButton {
+  border-radius: 999px;
+  background: rgba(19, 34, 56, 0.82);
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.publicationDetailPage .publicationDetailExpandHint {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  min-height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.publicationDetailPage .publicationDetailMediaArrow {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(19, 34, 56, 0.84);
+  color: #ffffff;
+  font-size: 28px;
+  box-shadow: 0 10px 24px rgba(19, 34, 56, 0.18);
+}
+
+.publicationDetailPage .publicationDetailMediaCounter {
+  right: 14px;
+  bottom: 14px;
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #008c76;
+  font-size: 11px;
+  font-weight: 950;
+  box-shadow: 0 8px 18px rgba(19, 34, 56, 0.10);
+}
+
+.publicationDetailPage .publicationDetailThumbnails {
+  min-height: 94px;
+  padding: 12px;
+  gap: 9px;
+  border-top: 1px solid #edf1f6;
+  background: #ffffff;
+}
+
+.publicationDetailPage .publicationDetailThumbnails button {
+  width: 78px;
+  height: 66px;
+  flex: 0 0 78px;
+  border-radius: 13px;
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+
+.publicationDetailPage .publicationDetailThumbnails button.active {
+  border-color: #00c6a7;
+  box-shadow: 0 0 0 3px rgba(0, 198, 167, 0.10);
+}
+
+/* ---------- Contenido ---------- */
+
+.publicationDetailPage .publicationDetailContent {
+  position: sticky;
+  top: 96px;
+  padding: 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.publicationDetailPage .publicationDetailHeading {
+  display: grid;
+  gap: 10px;
+}
+
+.publicationDetailPage .publicationDetailBadges {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.publicationDetailPage .publicationDetailBadges span {
+  min-height: 25px;
+  border-radius: 8px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 198, 167, 0.12);
+  color: #008c76;
+  font-size: 9.5px;
+  line-height: 1;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.publicationDetailPage .publicationDetailBadges span.licensed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.tech {
+  background: rgba(96, 67, 255, 0.12);
+  color: #4e2eea;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.home {
+  background: rgba(255, 121, 0, 0.12);
+  color: #dc5800;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.sports {
+  background: rgba(50, 126, 255, 0.13);
+  color: #075fe4;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.games {
+  background: rgba(132, 78, 255, 0.14);
+  color: #6429e6;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.music {
+  background: rgba(219, 39, 119, 0.11);
+  color: #be185d;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.tools {
+  background: rgba(245, 158, 11, 0.13);
+  color: #b45309;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.vehicles {
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.pets {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.fashion {
+  background: rgba(236, 72, 153, 0.11);
+  color: #be185d;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.baby {
+  background: rgba(14, 165, 233, 0.11);
+  color: #0369a1;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.beauty {
+  background: rgba(168, 85, 247, 0.11);
+  color: #7e22ce;
+}
+
+.publicationDetailPage .publicationDetailCategoryBadge.services {
+  background: rgba(19, 34, 56, 0.09);
+  color: #344054;
+}
+
+.publicationDetailPage .publicationDetailHeading h1 {
+  margin: 0;
+  color: #07152d;
+  font-size: clamp(30px, 3.1vw, 44px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  overflow-wrap: anywhere;
+}
+
+.publicationDetailPage .publicationDetailHeading p {
+  margin: 0;
+  color: #526174;
+  font-size: 13.5px;
+  line-height: 1.55;
+  font-weight: 700;
+  white-space: pre-wrap;
+}
+
+/* ---------- Información ---------- */
+
+.publicationDetailPage .publicationDetailInfoGrid {
+  display: grid;
+  gap: 9px;
+}
+
+.publicationDetailPage .publicationDetailInfoGrid section {
+  min-width: 0;
+  border: 1px solid #e4ebf4;
+  border-radius: 15px;
+  padding: 12px 13px;
+  background: #fbfcfe;
+}
+
+.publicationDetailPage .publicationDetailInfoGrid section > span {
+  display: block;
+  color: #008c76;
+  font-size: 9.5px;
+  line-height: 1;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+}
+
+.publicationDetailPage .publicationDetailInfoGrid section > strong {
+  display: block;
+  margin-top: 5px;
+  color: #132238;
+  font-size: 15px;
+  line-height: 1.22;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.publicationDetailPage .publicationDetailInfoGrid section > small {
+  display: block;
+  margin-top: 4px;
+  color: #667085;
+  font-size: 10.5px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.publicationDetailPage .publicationDetailInfoGrid section > p {
+  margin: 7px 0 0;
+  color: #526174;
+  font-size: 11.5px;
+  line-height: 1.45;
+  font-weight: 700;
+  white-space: pre-wrap;
+}
+
+.publicationDetailPage .publicationDetailWantedBox {
+  border-color: rgba(0, 168, 143, 0.18) !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0, 198, 167, 0.15),
+      rgba(0, 198, 167, 0.045)
+    ),
+    #fbfefd !important;
+}
+
+/* ---------- Acciones ---------- */
+
+.publicationDetailPage .publicationDetailActions,
+.publicationDetailPage .publicationDetailOwnActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.publicationDetailPage .publicationDetailActions button,
+.publicationDetailPage .publicationDetailOwnActions a {
+  min-width: 0;
+  min-height: 42px;
+  border-radius: 11px;
+  padding: 0 11px;
+  font-size: 11.5px;
+  font-weight: 900;
+}
+
+.publicationDetailPage .publicationDetailInterestButton {
+  background: linear-gradient(135deg, #00a88f, #007f72);
+  border: 0;
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(0, 128, 114, 0.18);
+}
+
+.publicationDetailPage .publicationDetailFavoriteButton {
+  border: 1px solid rgba(0, 168, 143, 0.30);
+  background: #ffffff;
+  color: #008c76;
+}
+
+.publicationDetailPage .publicationDetailFavoriteButton span {
+  color: #00a88f;
+  font-size: 20px;
+}
+
+.publicationDetailPage .publicationDetailFavoriteButton.isFavorite {
+  border-color: rgba(0, 168, 143, 0.42);
+  background: rgba(0, 198, 167, 0.09);
+  color: #008c76;
+}
+
+.publicationDetailPage .publicationDetailDismissButton {
+  border: 1px solid rgba(180, 35, 24, 0.20);
+  background: rgba(255, 77, 79, 0.07);
+  color: #b42318;
+}
+
+.publicationDetailPage .publicationDetailReportButton {
+  grid-column: 1 / -1;
+  width: fit-content;
+  min-height: 26px !important;
+  margin: 0 auto;
+  padding: 0 4px !important;
+  border: 0;
+  background: transparent;
+  color: #b42318;
+  font-size: 10.5px;
+  font-weight: 850;
+  text-decoration: underline;
+  box-shadow: none;
+}
+
+.publicationDetailPage .publicationDetailProposalNotice {
+  grid-column: 1 / -1;
+  margin: 0;
+  border-radius: 13px;
+  padding: 10px 11px;
+  background: rgba(0, 198, 167, 0.08);
+  color: #526174;
+  font-size: 10.5px;
+  line-height: 1.4;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* ---------- Estado no encontrado ---------- */
+
+.publicationDetailPage .publicationDetailNotFound {
+  width: min(720px, calc(100% - 32px));
+  margin: 42px auto 80px;
+  border: 1px solid #dfe7f1;
+  border-radius: 24px;
+  padding: 36px;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: 0 20px 48px rgba(19, 34, 56, 0.08);
+}
+
+/* ---------- Fullscreen ---------- */
+
+.publicationDetailPage .publicationFullscreenHeader strong {
+  text-transform: none;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 980px) {
+  .publicationDetailPage .publicationDetailLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .publicationDetailPage .publicationDetailContent {
+    position: static;
+  }
+
+  .publicationDetailPage .publicationDetailMainMedia {
+    height: min(62vh, 600px);
+    min-height: 460px;
+    max-height: 600px;
+  }
+}
+
+@media (max-width: 640px) {
+  .publicationDetailPage .publicationDetailTopBar,
+  .publicationDetailPage .publicationDetailLayout {
+    width: calc(100% - 20px);
+  }
+
+  .publicationDetailPage .publicationDetailTopBar {
+    margin-top: 12px;
+  }
+
+  .publicationDetailPage .publicationDetailTopBar button {
+    width: auto;
+    min-height: 38px;
+    padding: 0 12px;
+  }
+
+  .publicationDetailPage .publicationDetailLayout {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    gap: 12px;
+  }
+
+  .publicationDetailPage .publicationDetailGallery,
+  .publicationDetailPage .publicationDetailContent {
+    border-radius: 20px;
+  }
+
+  .publicationDetailPage .publicationDetailMainMedia {
+    height: 390px;
+    min-height: 390px;
+    max-height: 390px;
+  }
+
+  .publicationDetailPage .publicationDetailContent {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .publicationDetailPage .publicationDetailHeading h1 {
+    font-size: 30px;
+  }
+
+  .publicationDetailPage .publicationDetailHeading p {
+    font-size: 12.5px;
+  }
+
+  .publicationDetailPage .publicationDetailInfoGrid section {
+    border-radius: 14px;
+    padding: 11px 12px;
+  }
+
+  .publicationDetailPage .publicationDetailActions,
+  .publicationDetailPage .publicationDetailOwnActions {
+    grid-template-columns: 1fr;
+  }
+
+  .publicationDetailPage .publicationDetailReportButton,
+  .publicationDetailPage .publicationDetailProposalNotice {
+    grid-column: auto;
+  }
+
+  .publicationDetailPage .publicationDetailActions button,
+  .publicationDetailPage .publicationDetailOwnActions a {
+    min-height: 46px;
+    font-size: 12px;
+  }
+
+  .publicationDetailPage .publicationDetailMediaArrow {
+    width: 38px;
+    height: 38px;
+    font-size: 26px;
+  }
+
+  .publicationDetailPage .publicationDetailThumbnails {
+    min-height: 84px;
+    padding: 9px;
+  }
+
+  .publicationDetailPage .publicationDetailThumbnails button {
+    width: 70px;
+    height: 60px;
+    flex-basis: 70px;
+  }
+}
+
+@media (max-width: 390px) {
+  .publicationDetailPage .publicationDetailMainMedia {
+    height: 340px;
+    min-height: 340px;
+    max-height: 340px;
+  }
+
+  .publicationDetailPage .publicationDetailHeading h1 {
+    font-size: 27px;
+  }
+}
+
+/* =========================================================
+   FIX: botón "Ampliar" heredaba top/right desde App.css.
+   Al tener además left/bottom quedaba estirado sobre toda la imagen
+   y border-radius:999px lo convertía en un óvalo gigante.
+   ========================================================= */
+
+.publicationDetailPage .publicationDetailExpandHint {
+  top: auto !important;
+  right: auto !important;
+  left: 14px !important;
+  bottom: 14px !important;
+
+  width: auto !important;
+  height: 34px !important;
+  min-width: 0 !important;
+  min-height: 34px !important;
+  max-width: calc(100% - 28px) !important;
+
+  margin: 0 !important;
+  padding: 0 12px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 999px !important;
+
+  background: rgba(19, 34, 56, 0.82) !important;
+  color: #ffffff !important;
+
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.20) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transform: none !important;
+}
+
+/* El botón de ampliar video conserva su posición superior derecha. */
+.publicationDetailPage .publicationDetailExpandButton {
+  top: 14px !important;
+  right: 14px !important;
+  left: auto !important;
+  bottom: auto !important;
+
+  width: auto !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+}
+
+/* En táctil no dejamos que un hover heredado cambie el tamaño/forma. */
+@media (hover: none) {
+  .publicationDetailPage
+    .publicationDetailImageButton:hover
+    .publicationDetailExpandHint {
+    background: rgba(19, 34, 56, 0.82) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .publicationDetailPage .publicationDetailExpandHint {
+    left: 10px !important;
+    bottom: 10px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-width: calc(100% - 20px) !important;
+    padding: 0 10px !important;
+    font-size: 10px !important;
+  }
+
+  .publicationDetailPage .publicationDetailExpandButton {
+    top: 10px !important;
+    right: 10px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+  }
+}
+
