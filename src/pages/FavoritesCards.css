@@ -1,0 +1,509 @@
+/* =========================================================
+   FavoritesCards.css
+   Favoritos alineado con Home y Dashboard.
+   ========================================================= */
+
+.favoritesPage .favoritesGrid {
+  align-items: stretch;
+  gap: 16px;
+}
+
+/* Tarjeta: misma escala base del Dashboard nuevo. */
+.favoritesPage .favoriteCard {
+  min-width: 0;
+  height: 540px;
+  min-height: 540px;
+  max-height: 540px;
+  display: grid;
+  grid-template-rows: 220px 320px;
+  overflow: hidden;
+  border: 1px solid rgba(223, 231, 241, 0.96);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    0 18px 38px rgba(19, 34, 56, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.favoritesPage .favoriteCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 198, 167, 0.30);
+  box-shadow:
+    0 22px 46px rgba(19, 34, 56, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+/* ---------- Multimedia ---------- */
+
+.favoritesPage .favoriteCardMediaWrap,
+.favoritesPage .favoriteMediaCarousel,
+.favoritesPage .favoriteMediaOpenButton,
+.favoritesPage .favoriteMediaPlaceholder,
+.favoritesPage .favoriteMediaImage,
+.favoritesPage .favoriteMediaVideo {
+  width: 100%;
+  height: 220px !important;
+  min-height: 220px !important;
+  max-height: 220px !important;
+}
+
+.favoritesPage .favoriteCardMediaWrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
+  background: #edf3f7;
+}
+
+.favoritesPage .favoriteMediaOpenButton {
+  padding: 0;
+  border: 0;
+  display: block;
+  overflow: hidden;
+  background: #edf3f7;
+}
+
+.favoritesPage .favoriteMediaBackdrop {
+  display: none !important;
+}
+
+.favoritesPage .favoriteMediaImage,
+.favoritesPage .favoriteMediaVideo {
+  display: block;
+  object-fit: cover !important;
+  object-position: center;
+}
+
+/* Pills superiores con la misma proporción visual del Home/Dashboard. */
+.favoritesPage .favoriteSavedBadge {
+  top: 14px;
+  left: 14px;
+  min-height: 31px;
+  padding: 0 12px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, #00c6a7, #00a88f);
+  color: #ffffff;
+  font-size: 10.5px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 22px rgba(19, 34, 56, 0.12);
+}
+
+.favoritesPage .favoriteHeartButton {
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.95);
+  color: #00a88f;
+  font-size: 22px;
+  box-shadow: 0 10px 24px rgba(19, 34, 56, 0.16);
+  backdrop-filter: blur(10px);
+}
+
+.favoritesPage .favoriteHeartButton.active {
+  background: #ffffff;
+  color: #00a88f;
+}
+
+.favoritesPage .favoriteMediaArrow {
+  width: 34px;
+  height: 34px;
+  background: rgba(19, 34, 56, 0.82);
+  font-size: 24px;
+}
+
+.favoritesPage .favoriteMediaArrow.previous {
+  left: 10px;
+}
+
+.favoritesPage .favoriteMediaArrow.next {
+  right: 10px;
+}
+
+.favoritesPage .favoriteMediaDots {
+  bottom: 10px;
+}
+
+/* ---------- Cuerpo ---------- */
+
+.favoritesPage .favoriteUnifiedCardBody {
+  min-width: 0;
+  height: 320px;
+  min-height: 320px;
+  max-height: 320px;
+  padding: 14px;
+  display: grid;
+  grid-template-rows:
+    23px
+    41px
+    42px
+    58px
+    24px
+    42px;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.favoritesPage .favoriteUnifiedMetaRow {
+  min-width: 0;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+}
+
+.favoritesPage .favoriteUnifiedCategory,
+.favoritesPage .favoriteUnifiedState {
+  height: 23px;
+  min-width: 0;
+  border-radius: 8px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  font-size: 9.5px;
+  line-height: 1;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.favoritesPage .favoriteUnifiedCategory {
+  max-width: 66%;
+  background: rgba(0, 198, 167, 0.12);
+  color: #008c76;
+  text-transform: uppercase;
+}
+
+.favoritesPage .favoriteUnifiedState {
+  max-width: 42%;
+  margin-left: auto;
+  background: #f2f4f7;
+  color: #526174;
+}
+
+.favoritesPage .favoriteUnifiedCategory.tech {
+  background: rgba(96, 67, 255, 0.12);
+  color: #4e2eea;
+}
+
+.favoritesPage .favoriteUnifiedCategory.home {
+  background: rgba(255, 121, 0, 0.12);
+  color: #dc5800;
+}
+
+.favoritesPage .favoriteUnifiedCategory.sports {
+  background: rgba(50, 126, 255, 0.13);
+  color: #075fe4;
+}
+
+.favoritesPage .favoriteUnifiedCategory.games {
+  background: rgba(132, 78, 255, 0.14);
+  color: #6429e6;
+}
+
+.favoritesPage .favoriteUnifiedCategory.music {
+  background: rgba(219, 39, 119, 0.11);
+  color: #be185d;
+}
+
+.favoritesPage .favoriteUnifiedCategory.tools {
+  background: rgba(245, 158, 11, 0.13);
+  color: #b45309;
+}
+
+.favoritesPage .favoriteUnifiedCategory.vehicles {
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+}
+
+.favoritesPage .favoriteUnifiedCategory.pets {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+}
+
+.favoritesPage .favoriteUnifiedCategory.fashion {
+  background: rgba(236, 72, 153, 0.11);
+  color: #be185d;
+}
+
+.favoritesPage .favoriteUnifiedCategory.baby {
+  background: rgba(14, 165, 233, 0.11);
+  color: #0369a1;
+}
+
+.favoritesPage .favoriteUnifiedCategory.beauty {
+  background: rgba(168, 85, 247, 0.11);
+  color: #7e22ce;
+}
+
+.favoritesPage .favoriteUnifiedCategory.services {
+  background: rgba(19, 34, 56, 0.09);
+  color: #344054;
+}
+
+.favoritesPage .favoriteUnifiedCardBody h3 {
+  min-width: 0;
+  min-height: 41px;
+  max-height: 41px;
+  margin: 0;
+  overflow: hidden;
+  color: #07152d;
+  font-size: 18px;
+  line-height: 1.12;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.favoritesPage .favoriteUnifiedDescription {
+  min-width: 0;
+  min-height: 42px;
+  max-height: 42px;
+  margin: 0;
+  overflow: hidden;
+  color: #526174;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 700;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Igual al bloque "Busca a cambio" usado en Dashboard. */
+.favoritesPage .favoriteUnifiedWantsBox {
+  min-width: 0;
+  height: 58px;
+  border-radius: 12px;
+  padding: 9px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0, 198, 167, 0.16),
+      rgba(0, 198, 167, 0.06)
+    );
+  color: #132238;
+}
+
+.favoritesPage .favoriteUnifiedWantsBox > div {
+  min-width: 0;
+}
+
+.favoritesPage .favoriteUnifiedWantsBox span {
+  display: block;
+  color: #305263;
+  font-size: 11.5px;
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.favoritesPage .favoriteUnifiedWantsBox strong {
+  min-width: 0;
+  max-height: 30px;
+  margin-top: 3px;
+  overflow: hidden;
+  color: #132238;
+  font-size: 13px;
+  line-height: 1.15;
+  font-weight: 900;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.favoritesPage .favoriteUnifiedSwapIcon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 10px;
+  display: grid !important;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.68);
+  color: #132238 !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+}
+
+.favoritesPage .favoriteUnifiedLocation {
+  min-width: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #526174;
+  font-size: 12.5px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.favoritesPage .favoriteUnifiedLocation > strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: inherit;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.favoritesPage .favoriteUnifiedLocation > span {
+  color: #24364e;
+  font-size: 17px;
+}
+
+/* ---------- Acciones ---------- */
+
+.favoritesPage .favoriteUnifiedActions {
+  height: 42px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.favoritesPage .favoriteProposalButton,
+.favoritesPage .favoriteRemoveButton {
+  min-width: 0;
+  height: 42px;
+  min-height: 42px;
+  margin: 0;
+  border-radius: 11px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Rubik", sans-serif;
+  font-size: 12.5px;
+  line-height: 1;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.favoritesPage .favoriteProposalButton {
+  border: 0;
+  background: linear-gradient(135deg, #00a88f, #007f72);
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(0, 128, 114, 0.18);
+}
+
+.favoritesPage .favoriteRemoveButton {
+  min-width: 72px;
+  border: 1px solid rgba(180, 35, 24, 0.22);
+  background: rgba(255, 77, 79, 0.075);
+  color: #b42318;
+}
+
+.favoritesPage .favoriteProposalButton:hover:not(:disabled),
+.favoritesPage .favoriteRemoveButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+/* ---------- Grid responsive ---------- */
+
+@media (min-width: 1280px) {
+  .favoritesPage .favoritesGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .favoritesPage .favoritesGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .favoritesPage .favoritesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .favoritesPage .favoriteCard {
+    height: 530px;
+    min-height: 530px;
+    max-height: 530px;
+    grid-template-rows: 210px 320px;
+  }
+
+  .favoritesPage .favoriteCardMediaWrap,
+  .favoritesPage .favoriteMediaCarousel,
+  .favoritesPage .favoriteMediaOpenButton,
+  .favoritesPage .favoriteMediaPlaceholder,
+  .favoritesPage .favoriteMediaImage,
+  .favoritesPage .favoriteMediaVideo {
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .favoritesPage .favoritesGrid {
+    display: flex;
+    grid-template-columns: none;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    padding: 2px 2px 12px;
+    scrollbar-width: none;
+  }
+
+  .favoritesPage .favoritesGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .favoritesPage .favoriteCard {
+    flex: 0 0 min(280px, 84vw);
+    width: min(280px, 84vw);
+    height: 530px;
+    min-height: 530px;
+    max-height: 530px;
+    grid-template-rows: 210px 320px;
+    scroll-snap-align: start;
+  }
+
+  .favoritesPage .favoriteCardMediaWrap,
+  .favoritesPage .favoriteMediaCarousel,
+  .favoritesPage .favoriteMediaOpenButton,
+  .favoritesPage .favoriteMediaPlaceholder,
+  .favoritesPage .favoriteMediaImage,
+  .favoritesPage .favoriteMediaVideo {
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+  }
+
+  .favoritesPage .favoriteUnifiedCardBody {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .favoritesPage .favoriteCard {
+    flex-basis: 88vw;
+    width: 88vw;
+  }
+}

@@ -1,0 +1,548 @@
+/* =========================================================
+   MatchesCards.css
+   Tarjetas de Matches alineadas con la estética Home / Dashboard.
+   También corrige el estiramiento vertical de la publicidad.
+   ========================================================= */
+
+.matchesPage .modernMatchesGrid {
+  align-items: start !important;
+  gap: 18px !important;
+}
+
+/* =========================================================
+   TARJETA
+   ========================================================= */
+
+.matchesPage .modernMatchCard {
+  width: 100%;
+  min-width: 0;
+  height: 760px;
+  min-height: 760px;
+  max-height: 760px;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 220px 540px;
+  overflow: hidden;
+  border: 1px solid rgba(223, 231, 241, 0.96) !important;
+  border-radius: 18px !important;
+  background: #ffffff;
+  box-shadow:
+    0 18px 38px rgba(19, 34, 56, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82) !important;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.matchesPage .modernMatchCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 198, 167, 0.28) !important;
+  box-shadow:
+    0 22px 46px rgba(19, 34, 56, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86) !important;
+}
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.matchesPage .modernMatchMediaWrap,
+.matchesPage .matchMediaCarousel,
+.matchesPage .matchMediaExpandButton,
+.matchesPage .matchMediaPlaceholder,
+.matchesPage .matchMediaPreview,
+.matchesPage .matchVideoPreview {
+  width: 100%;
+  height: 220px !important;
+  min-height: 220px !important;
+  max-height: 220px !important;
+}
+
+.matchesPage .modernMatchMediaWrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px 18px 0 0 !important;
+  background: #edf3f7;
+}
+
+.matchesPage .matchMediaPreview,
+.matchesPage .matchVideoPreview {
+  display: block;
+  object-fit: cover !important;
+  object-position: center;
+}
+
+.matchesPage .matchMediaBackdrop {
+  display: none !important;
+}
+
+/* Botón favorito, misma escala visual que las tarjetas nuevas del Dash. */
+.matchesPage .matchFavoriteButton {
+  top: 14px !important;
+  left: 14px !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+  font-size: 22px !important;
+}
+
+/* Score similar al pill superior del Home. */
+.matchesPage .matchScoreFloating {
+  top: 14px !important;
+  right: 14px !important;
+  min-width: 58px !important;
+  min-height: 38px !important;
+  padding: 0 12px !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #008c76 !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  box-shadow: 0 10px 22px rgba(19, 34, 56, 0.12) !important;
+}
+
+/* Carrusel más compacto. */
+.matchesPage .matchCarouselButton {
+  width: 34px;
+  height: 34px;
+  font-size: 24px;
+  background: rgba(19, 34, 56, 0.82);
+}
+
+.matchesPage .matchCarouselButton.previous {
+  left: 10px;
+}
+
+.matchesPage .matchCarouselButton.next {
+  right: 10px;
+}
+
+.matchesPage .matchCarouselDots {
+  bottom: 10px;
+}
+
+/* =========================================================
+   CUERPO
+   ========================================================= */
+
+.matchesPage .modernMatchContent {
+  min-width: 0;
+  height: 540px;
+  min-height: 540px;
+  max-height: 540px;
+  padding: 15px;
+  display: flex !important;
+  flex-direction: column;
+  gap: 9px !important;
+  overflow: hidden;
+}
+
+.matchesPage .modernMatchTopline {
+  min-width: 0;
+  min-height: 28px;
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px !important;
+}
+
+.matchesPage .modernMatchTopline .miniLabel {
+  min-height: 26px;
+  padding: 0 9px !important;
+  border-radius: 9px !important;
+  background: rgba(100, 41, 230, 0.10) !important;
+  color: #6429e6 !important;
+  font-size: 9.5px !important;
+  line-height: 1;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.04em !important;
+}
+
+.matchesPage .modernMatchTopline > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  color: #526174 !important;
+  font-size: 11.5px !important;
+  line-height: 1.2;
+  font-weight: 850;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.matchesPage .modernMatchContent h2 {
+  min-height: 27px;
+  max-height: 27px;
+  margin: 0 !important;
+  overflow: hidden;
+  color: #07152d !important;
+  font-size: 20px !important;
+  line-height: 1.12 !important;
+  font-weight: 900;
+  letter-spacing: -0.04em !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Lo que ofrece: neutro, como la descripción principal del Home. */
+.matchesPage .matchOfferBox {
+  min-width: 0;
+  min-height: 90px;
+  max-height: 90px;
+  padding: 11px 12px !important;
+  overflow: hidden;
+  border: 1px solid #e4ebf4 !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(19, 34, 56, 0.025),
+      rgba(19, 34, 56, 0.055)
+    ),
+    #fbfcfe !important;
+}
+
+.matchesPage .matchOfferBox span,
+.matchesPage .matchMiniComparison span {
+  display: block;
+  color: #008c76 !important;
+  font-size: 9.5px !important;
+  line-height: 1.1;
+  font-weight: 950 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.055em !important;
+}
+
+.matchesPage .matchOfferBox strong {
+  min-width: 0;
+  max-height: 36px;
+  margin-top: 5px !important;
+  overflow: hidden;
+  color: #101828 !important;
+  font-size: 15.5px !important;
+  line-height: 1.16 !important;
+  font-weight: 900;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.matchesPage .matchOfferBox p {
+  min-width: 0;
+  margin: 5px 0 0 !important;
+  overflow: hidden;
+  color: #667085 !important;
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Comparación: dos bloques paralelos y compactos. */
+.matchesPage .matchMiniComparison {
+  min-width: 0;
+  min-height: 105px;
+  max-height: 105px;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.matchesPage .matchMiniComparison > div {
+  min-width: 0;
+  height: 105px;
+  padding: 10px 11px !important;
+  overflow: hidden;
+  border: 1px solid rgba(0, 168, 143, 0.16) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0, 198, 167, 0.13),
+      rgba(0, 198, 167, 0.045)
+    ),
+    #fbfefd !important;
+}
+
+.matchesPage .matchMiniComparison strong {
+  min-width: 0;
+  max-height: 36px;
+  margin-top: 5px !important;
+  overflow: hidden;
+  color: #132238 !important;
+  font-size: 13px !important;
+  line-height: 1.18 !important;
+  font-weight: 900;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.matchesPage .matchMiniComparison p {
+  min-width: 0;
+  margin: 5px 0 0 !important;
+  overflow: hidden;
+  color: #667085 !important;
+  font-size: 10.5px !important;
+  line-height: 1.2 !important;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.matchesPage .matchServiceMeta.compact {
+  margin-top: 4px;
+  gap: 4px;
+}
+
+.matchesPage .matchServiceMeta.compact span {
+  font-size: 9px !important;
+  letter-spacing: 0 !important;
+  text-transform: none;
+}
+
+/* Motivos: reservamos siempre el mismo espacio para alinear acciones. */
+.matchesPage .modernMatchReasons {
+  min-height: 48px;
+  max-height: 48px;
+  display: flex !important;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  gap: 5px !important;
+  overflow: hidden;
+}
+
+.matchesPage .modernMatchReasons:empty {
+  visibility: hidden;
+}
+
+.matchesPage .modernMatchReasons span {
+  max-width: 100%;
+  min-height: 22px;
+  padding: 5px 8px !important;
+  overflow: hidden;
+  border-radius: 999px !important;
+  background: #eef2ff !important;
+  color: #4338ca !important;
+  font-size: 9.5px !important;
+  line-height: 1.1;
+  font-weight: 900 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Acciones siguiendo la estética del Dashboard:
+   dos secundarias y una acción principal destacada. */
+.matchesPage .modernMatchActionsExtended {
+  min-height: 92px;
+  margin-top: auto !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-rows: 40px 44px;
+  gap: 8px !important;
+}
+
+.matchesPage .modernMatchActionsExtended .secondaryButton,
+.matchesPage .modernMatchActionsExtended .dangerButton,
+.matchesPage .modernMatchActionsExtended .primaryButton {
+  width: 100%;
+  min-width: 0;
+  min-height: 0 !important;
+  height: 40px;
+  padding: 0 9px !important;
+  border-radius: 11px !important;
+  font-size: 11.5px !important;
+  line-height: 1;
+  font-weight: 900 !important;
+}
+
+.matchesPage .modernMatchActionsExtended .primaryButton {
+  grid-column: 1 / -1;
+  height: 44px;
+  background: linear-gradient(135deg, #132238, #0b1d35);
+  box-shadow: 0 10px 22px rgba(19, 34, 56, 0.16);
+}
+
+.matchesPage .modernMatchActionsExtended .dangerButton {
+  border: 1px solid rgba(180, 35, 24, 0.22);
+  background: rgba(255, 77, 79, 0.075);
+  color: #b42318;
+}
+
+.matchesPage .matchCardReportButton {
+  min-height: 24px !important;
+  height: 24px;
+  margin: 0 auto !important;
+  padding: 0 5px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #b42318 !important;
+  font-size: 10.5px !important;
+  line-height: 1;
+  font-weight: 850 !important;
+  text-decoration: underline;
+  box-shadow: none !important;
+}
+
+/* =========================================================
+   PUBLICIDAD
+   ========================================================= */
+
+/*
+  Antes la publicidad era un grid-item y además tenía min-height:100%.
+  Grid la estiraba hasta la altura completa de las tarjetas de Matches,
+  aunque la imagen fuera cuadrada. Por eso quedaba un gran bloque blanco
+  debajo de la creatividad.
+
+  Ahora este wrapper es el único grid-item y siempre conserva altura auto.
+*/
+.matchesPage .matchesFeedAdvertisementSlot {
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  align-self: start;
+  justify-self: stretch;
+}
+
+.matchesPage .matchesFeedAdvertisementSlot .publicAdvertisementLink {
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  display: block;
+  align-self: start;
+}
+
+.matchesPage .matchesFeedAdvertisementSlot .matchesFeedAdvertisement,
+.matchesPage .matchesFeedAdvertisementSlot .publicAdvertisement,
+.matchesPage .matchesFeedAdvertisementSlot .publicAdvertisement-feed {
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: start !important;
+  border-radius: 18px !important;
+}
+
+.matchesPage
+  .matchesFeedAdvertisementSlot
+  .publicAdvertisementMedia {
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 18px !important;
+  overflow: hidden;
+}
+
+.matchesPage
+  .matchesFeedAdvertisementSlot
+  .publicAdvertisementMedia
+  img {
+  width: 100%;
+  height: 100% !important;
+  display: block;
+  object-fit: cover;
+}
+
+/* Anulamos explícitamente la regla antigua del App.css. */
+.matchesPage .matchesFeedAdvertisement {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (min-width: 1280px) {
+  .matchesPage .modernMatchesGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .matchesPage .modernMatchesGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .matchesPage .modernMatchesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .matchesPage .modernMatchCard {
+    height: 750px;
+    min-height: 750px;
+    max-height: 750px;
+    grid-template-rows: 210px 540px;
+  }
+
+  .matchesPage .modernMatchMediaWrap,
+  .matchesPage .matchMediaCarousel,
+  .matchesPage .matchMediaExpandButton,
+  .matchesPage .matchMediaPlaceholder,
+  .matchesPage .matchMediaPreview,
+  .matchesPage .matchVideoPreview {
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .matchesPage .modernMatchesGrid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .matchesPage .modernMatchCard {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    grid-template-rows: 220px auto;
+    border-radius: 20px !important;
+  }
+
+  .matchesPage .modernMatchMediaWrap {
+    border-radius: 20px 20px 0 0 !important;
+  }
+
+  .matchesPage .modernMatchContent {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    padding: 14px;
+    overflow: visible;
+  }
+
+  .matchesPage .matchMiniComparison {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    grid-template-columns: 1fr !important;
+  }
+
+  .matchesPage .matchMiniComparison > div {
+    height: auto;
+    min-height: 88px;
+  }
+
+  .matchesPage .modernMatchReasons {
+    min-height: 0;
+    max-height: none;
+  }
+
+  .matchesPage .matchesFeedAdvertisementSlot,
+  .matchesPage .matchesFeedAdvertisementSlot .publicAdvertisement,
+  .matchesPage .matchesFeedAdvertisementSlot .publicAdvertisement-feed {
+    border-radius: 20px !important;
+  }
+}

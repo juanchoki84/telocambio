@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { useAuth } from "../context/AuthContext";
 import AppNavbar from "../components/AppNavbar";
+import "./MatchesCards.css";
 import LogoMark from "../components/LogoMark";
 import { storage } from "../services/firebase";
 import { getServiceImageUrl } from "../utils/serviceMedia";
@@ -49,7 +50,7 @@ const matchMediaContentStyle = {
   zIndex: 1,
   width: "100%",
   height: "100%",
-  objectFit: "contain",
+  objectFit: "cover",
   objectPosition: "center",
   display: "block",
   background: "transparent",
@@ -1815,11 +1816,13 @@ function Matches() {
                 </article>
 
                 {shouldInsertAdvertisement && (
-                  <PublicAdvertisement
-                    advertisements={matchesAdvertisements}
-                    variant="feed"
-                    className="matchesFeedAdvertisement"
-                  />
+                  <div className="matchesFeedAdvertisementSlot">
+                    <PublicAdvertisement
+                      advertisements={matchesAdvertisements}
+                      variant="feed"
+                      className="matchesFeedAdvertisement"
+                    />
+                  </div>
                 )}
               </Fragment>
             );

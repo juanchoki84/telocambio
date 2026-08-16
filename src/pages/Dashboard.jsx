@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import AppNavbar from "../components/AppNavbar";
+import "./DashboardCards.css";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { storage } from "../services/firebase";
 import { getServiceImageUrl } from "../utils/serviceMedia";
@@ -39,7 +40,6 @@ const CATEGORIES = [
   "Mascotas",
   "Moda",
   "Juegos y juguetes",
-  "Instrumentos musicales",
   "Bebés",
   "Belleza y cuidado personal",
   "Servicios",
@@ -131,6 +131,39 @@ function capitalizeFirstLetter(value, fallback = "") {
   const firstCharacter = characters.shift() || "";
 
   return `${firstCharacter.toLocaleUpperCase("es-AR")}${characters.join("")}`;
+}
+
+function getDashboardCategoryTone(category) {
+  const normalizedCategory = normalizeText(category);
+
+  const categoryTones = {
+    tecnologia: "tech",
+    "hogar y muebles": "home",
+    electrodomesticos: "home",
+    herramientas: "tools",
+    construccion: "tools",
+    "deportes y fitness": "sports",
+    "accesorios para vehiculos": "vehicles",
+    mascotas: "pets",
+    moda: "fashion",
+    "juegos y juguetes": "games",
+    "instrumentos musicales": "music",
+    bebes: "baby",
+    "belleza y cuidado personal": "beauty",
+    servicios: "services",
+  };
+
+  return categoryTones[normalizedCategory] || "default";
+}
+
+function getSuggestionDescription(exchange) {
+  const description = String(exchange?.offerDescription || "").trim();
+
+  if (description) {
+    return capitalizeFirstLetter(description);
+  }
+
+  return getOfferMetaSummary(exchange);
 }
 
 function normalizeMediaCollection(mediaValue) {
@@ -2289,9 +2322,23 @@ function Dashboard() {
                   );
                 };
 
+                const suggestionCategory =
+                  suggestion.offerCategory || "Sin categoría";
+                const suggestionCategoryTone =
+                  getDashboardCategoryTone(suggestionCategory);
+                const suggestionDescription =
+                  getSuggestionDescription(suggestion);
+                const suggestionLocation =
+                  getExchangeLocationLabel(suggestion);
+                const isFavorite = favoriteIds.includes(
+                  suggestion.id
+                );
+                const isFavoriteLoading =
+                  favoriteLoadingId === suggestion.id;
+
                 return (
                   <article
-                    className="dashboardSuggestionCard dashboardSuggestionCompactCard"
+                    className="dashboardSuggestionCard dashboardHomeStyleCard"
                     key={suggestion.id}
                     role="link"
                     tabIndex={0}
@@ -2310,17 +2357,31 @@ function Dashboard() {
                       }
                     }}
                   >
-                    <div className="dashboardSuggestionMediaWrap dashboardSuggestionCompactMediaWrap">
+                    <div className="dashboardHomeStyleMedia">
                       <ExchangeMediaPreview
                         exchange={suggestion}
-                        className="dashboardSuggestionMedia"
+                        className="dashboardHomeStyleMediaCarousel"
                         enableExpandedViewer={false}
                         videoControls={false}
                         mediaFit="cover"
                       />
+
+                      <span className="dashboardHomeStyleMatchPill">
+                        Sugerido
+                      </span>
+
+                      <span className="dashboardHomeStyleDistancePill">
+                        {suggestionDistance}
+                      </span>
                     </div>
 
-                    <div className="dashboardSuggestionBody dashboardSuggestionCompactBody">
+                    <div className="dashboardHomeStyleBody">
+                      <span
+                        className={`dashboardHomeStyleCategory ${suggestionCategoryTone}`}
+                      >
+                        {suggestionCategory}
+                      </span>
+
                       <h3>
                         {capitalizeFirstLetter(
                           suggestion.offerTitle,
@@ -2328,21 +2389,79 @@ function Dashboard() {
                         )}
                       </h3>
 
-                      <div className="dashboardSuggestionCompactSearch">
-                        <span>Busca</span>
-                        <strong>
-                          {capitalizeFirstLetter(
-                            suggestion.searchTitle,
-                            "No indicado"
-                          )}
-                        </strong>
+                      <p className="dashboardHomeStyleDescription">
+                        {suggestionDescription}
+                      </p>
+
+                      <div className="dashboardHomeStyleWantsBox">
+                        <div>
+                          <span>Busca a cambio:</span>
+                          <strong>
+                            {capitalizeFirstLetter(
+                              suggestion.searchTitle,
+                              "No indicado"
+                            )}
+                          </strong>
+                        </div>
+
+                        <span
+                          className="dashboardHomeStyleSwapIcon"
+                          aria-hidden="true"
+                        >
+                          ↔
+                        </span>
                       </div>
 
-                      <div className="dashboardSuggestionCompactDistance">
-                        <span aria-hidden="true">⌖</span>
-                        <strong>
-                          {suggestionDistance}
-                        </strong>
+                      <div className="dashboardHomeStyleLocation">
+                        <span
+                          className="dashboardHomeStyleLocationIcon"
+                          aria-hidden="true"
+                        >
+                          ⌖
+                        </span>
+                        <span title={suggestionLocation}>
+                          {suggestionLocation}
+                        </span>
+                      </div>
+
+                      <div className="dashboardHomeStyleActions">
+                        <button
+                          type="button"
+                          className="dashboardHomeStyleInterestButton"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleSuggestionInterest(suggestion);
+                          }}
+                          disabled={interestLoading}
+                        >
+                          Me interesa
+                        </button>
+
+                        <button
+                          type="button"
+                          className={
+                            isFavorite
+                              ? "dashboardHomeStyleFavoriteButton active"
+                              : "dashboardHomeStyleFavoriteButton"
+                          }
+                          aria-label={
+                            isFavorite
+                              ? "Quitar de favoritos"
+                              : "Agregar a favoritos"
+                          }
+                          title={
+                            isFavorite
+                              ? "Quitar de favoritos"
+                              : "Agregar a favoritos"
+                          }
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleToggleFavorite(suggestion.id);
+                          }}
+                          disabled={isFavoriteLoading}
+                        >
+                          {isFavorite ? "♥" : "♡"}
+                        </button>
                       </div>
                     </div>
                   </article>

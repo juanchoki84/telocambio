@@ -1,0 +1,507 @@
+/* =========================================================
+   DashboardCards.css
+   Tarjetas del Dashboard alineadas visualmente con las del Home.
+   CSS aislado para no seguir acumulando overrides en App.css.
+   ========================================================= */
+
+.dashboardPage .dashboardSuggestionsGrid {
+  align-items: stretch;
+}
+
+/*
+  En Home las tarjetas se muestran en 4 columnas y la imagen usa 220px.
+  En Dashboard mantenemos esa escala visual, pero damos algo más de alto
+  al cuerpo para admitir datos reales sin que unas tarjetas crezcan más
+  que otras.
+*/
+.dashboardPage .dashboardSuggestionsLayout .dashboardSuggestionsGrid {
+  grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+  gap: 16px;
+}
+
+.dashboardHomeStyleCard {
+  min-width: 0;
+  height: 540px;
+  min-height: 540px;
+  max-height: 540px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 220px 320px;
+  border: 1px solid rgba(223, 231, 241, 0.96);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    0 18px 38px rgba(19, 34, 56, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.dashboardHomeStyleCard:hover,
+.dashboardHomeStyleCard:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(0, 198, 167, 0.34);
+  box-shadow:
+    0 22px 46px rgba(19, 34, 56, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  outline: none;
+}
+
+/* ---------- Multimedia ---------- */
+
+.dashboardHomeStyleMedia {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  min-height: 220px;
+  max-height: 220px;
+  overflow: hidden;
+  background: #f2f6fb;
+}
+
+.dashboardHomeStyleMedia .exchangeMediaCarousel,
+.dashboardHomeStyleMedia .exchangeMediaExpandButton,
+.dashboardHomeStyleMedia .exchangeMediaPlaceholder,
+.dashboardHomeStyleMedia .exchangeMediaPreview,
+.dashboardHomeStyleMedia .exchangeVideoPreview,
+.dashboardHomeStyleMedia .dashboardHomeStyleMediaCarousel {
+  width: 100%;
+  height: 220px !important;
+  min-height: 220px !important;
+  max-height: 220px !important;
+}
+
+.dashboardHomeStyleMedia .exchangeMediaPreview,
+.dashboardHomeStyleMedia .exchangeVideoPreview {
+  object-fit: cover !important;
+}
+
+.dashboardHomeStyleMedia .exchangeMediaBackdrop {
+  display: none !important;
+}
+
+.dashboardHomeStyleMatchPill,
+.dashboardHomeStyleDistancePill {
+  position: absolute;
+  top: 14px;
+  z-index: 9;
+  min-height: 31px;
+  border-radius: 10px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11.5px;
+  line-height: 1;
+  font-weight: 900;
+  box-shadow: 0 10px 22px rgba(19, 34, 56, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.dashboardHomeStyleMatchPill {
+  left: 14px;
+  background: linear-gradient(135deg, #00c6a7, #00a88f);
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+}
+
+.dashboardHomeStyleDistancePill {
+  right: 14px;
+  max-width: calc(100% - 112px);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.94);
+  color: #008c76;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Carrusel: se integra visualmente con la referencia del Home. */
+.dashboardHomeStyleMedia .mediaCarouselButton {
+  width: 32px;
+  height: 32px;
+  font-size: 24px;
+  background: rgba(19, 34, 56, 0.78);
+}
+
+.dashboardHomeStyleMedia .mediaCarouselButton.previous {
+  left: 9px;
+}
+
+.dashboardHomeStyleMedia .mediaCarouselButton.next {
+  right: 9px;
+}
+
+.dashboardHomeStyleMedia .mediaCarouselDots {
+  bottom: 9px;
+}
+
+/* ---------- Cuerpo ---------- */
+
+.dashboardHomeStyleBody {
+  min-width: 0;
+  height: 320px;
+  min-height: 320px;
+  max-height: 320px;
+  padding: 14px;
+  display: grid;
+  grid-template-rows:
+    23px
+    41px
+    42px
+    58px
+    24px
+    42px;
+  gap: 8px;
+  align-content: start;
+}
+
+.dashboardHomeStyleCategory {
+  width: fit-content;
+  max-width: 100%;
+  height: 23px;
+  border-radius: 8px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  background: rgba(0, 198, 167, 0.12);
+  color: #008c76;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dashboardHomeStyleCategory.tech {
+  background: rgba(96, 67, 255, 0.12);
+  color: #4e2eea;
+}
+
+.dashboardHomeStyleCategory.home {
+  background: rgba(255, 121, 0, 0.12);
+  color: #dc5800;
+}
+
+.dashboardHomeStyleCategory.sports {
+  background: rgba(50, 126, 255, 0.13);
+  color: #075fe4;
+}
+
+.dashboardHomeStyleCategory.games {
+  background: rgba(132, 78, 255, 0.14);
+  color: #6429e6;
+}
+
+.dashboardHomeStyleCategory.music {
+  background: rgba(219, 39, 119, 0.11);
+  color: #be185d;
+}
+
+.dashboardHomeStyleCategory.tools {
+  background: rgba(245, 158, 11, 0.13);
+  color: #b45309;
+}
+
+.dashboardHomeStyleCategory.vehicles {
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+}
+
+.dashboardHomeStyleCategory.pets {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+}
+
+.dashboardHomeStyleCategory.fashion {
+  background: rgba(236, 72, 153, 0.11);
+  color: #be185d;
+}
+
+.dashboardHomeStyleCategory.baby {
+  background: rgba(14, 165, 233, 0.11);
+  color: #0369a1;
+}
+
+.dashboardHomeStyleCategory.beauty {
+  background: rgba(168, 85, 247, 0.11);
+  color: #7e22ce;
+}
+
+.dashboardHomeStyleCategory.services {
+  background: rgba(19, 34, 56, 0.09);
+  color: #344054;
+}
+
+.dashboardHomeStyleBody h3 {
+  min-width: 0;
+  min-height: 41px;
+  max-height: 41px;
+  margin: 0;
+  overflow: hidden;
+  color: #07152d;
+  font-size: 18px;
+  line-height: 1.12;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.dashboardHomeStyleDescription {
+  min-width: 0;
+  min-height: 42px;
+  max-height: 42px;
+  margin: 0;
+  overflow: hidden;
+  color: #526174;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 700;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.dashboardHomeStyleWantsBox {
+  min-width: 0;
+  height: 58px;
+  border-radius: 12px;
+  padding: 9px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0, 198, 167, 0.16),
+      rgba(0, 198, 167, 0.06)
+    );
+  color: #132238;
+}
+
+.dashboardHomeStyleWantsBox > div {
+  min-width: 0;
+}
+
+.dashboardHomeStyleWantsBox span {
+  display: block;
+  color: #305263;
+  font-size: 11.5px;
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.dashboardHomeStyleWantsBox strong {
+  min-width: 0;
+  max-height: 30px;
+  margin-top: 3px;
+  overflow: hidden;
+  color: #132238;
+  font-size: 13px;
+  line-height: 1.15;
+  font-weight: 900;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.dashboardHomeStyleSwapIcon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 10px;
+  display: grid !important;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.65);
+  color: #132238 !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+}
+
+.dashboardHomeStyleLocation {
+  min-width: 0;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #526174;
+  font-size: 12.5px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.dashboardHomeStyleLocation > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboardHomeStyleLocationIcon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  display: grid;
+  place-items: center;
+  color: #24364e;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.dashboardHomeStyleActions {
+  height: 42px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.dashboardHomeStyleInterestButton,
+.dashboardHomeStyleFavoriteButton {
+  min-width: 0;
+  height: 42px;
+  min-height: 42px;
+  margin: 0;
+  border-radius: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Rubik", sans-serif;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.dashboardHomeStyleInterestButton {
+  border: 0;
+  padding: 0 12px;
+  background: linear-gradient(135deg, #00a88f, #007f72);
+  color: #ffffff;
+  font-size: 13.5px;
+  box-shadow: 0 10px 22px rgba(0, 128, 114, 0.18);
+}
+
+.dashboardHomeStyleFavoriteButton {
+  width: 44px;
+  padding: 0;
+  border: 1px solid rgba(0, 168, 143, 0.34);
+  background: #ffffff;
+  color: #00a88f;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.dashboardHomeStyleFavoriteButton.active {
+  border-color: rgba(0, 168, 143, 0.5);
+  background: rgba(0, 198, 167, 0.09);
+  color: #00a88f;
+}
+
+.dashboardHomeStyleInterestButton:hover:not(:disabled),
+.dashboardHomeStyleFavoriteButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.dashboardHomeStyleInterestButton:disabled,
+.dashboardHomeStyleFavoriteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 980px) {
+  .dashboardPage .dashboardSuggestionsLayout .dashboardSuggestionsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .dashboardHomeStyleCard {
+    height: 530px;
+    min-height: 530px;
+    max-height: 530px;
+    grid-template-rows: 210px 320px;
+  }
+
+  .dashboardHomeStyleMedia,
+  .dashboardHomeStyleMedia .exchangeMediaCarousel,
+  .dashboardHomeStyleMedia .exchangeMediaExpandButton,
+  .dashboardHomeStyleMedia .exchangeMediaPlaceholder,
+  .dashboardHomeStyleMedia .exchangeMediaPreview,
+  .dashboardHomeStyleMedia .exchangeVideoPreview,
+  .dashboardHomeStyleMedia .dashboardHomeStyleMediaCarousel {
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+  }
+}
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 620px) {
+  /*
+    Igual que el Home en móvil: una fila desplazable permite conservar
+    la proporción real de la tarjeta y evita achicar tipografía.
+  */
+  .dashboardPage .dashboardSuggestionsLayout .dashboardSuggestionsGrid {
+    display: flex;
+    grid-template-columns: none;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    padding: 2px 2px 12px;
+    scrollbar-width: none;
+  }
+
+  .dashboardPage
+    .dashboardSuggestionsLayout
+    .dashboardSuggestionsGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dashboardHomeStyleCard {
+    flex: 0 0 min(280px, 84vw);
+    width: min(280px, 84vw);
+    height: 530px;
+    min-height: 530px;
+    max-height: 530px;
+    grid-template-rows: 210px 320px;
+    scroll-snap-align: start;
+  }
+
+  .dashboardHomeStyleMedia,
+  .dashboardHomeStyleMedia .exchangeMediaCarousel,
+  .dashboardHomeStyleMedia .exchangeMediaExpandButton,
+  .dashboardHomeStyleMedia .exchangeMediaPlaceholder,
+  .dashboardHomeStyleMedia .exchangeMediaPreview,
+  .dashboardHomeStyleMedia .exchangeVideoPreview,
+  .dashboardHomeStyleMedia .dashboardHomeStyleMediaCarousel {
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+  }
+
+  .dashboardHomeStyleBody {
+    padding: 14px;
+  }
+}
+
+/* Teléfonos realmente angostos: seguimos conservando todas iguales. */
+@media (max-width: 360px) {
+  .dashboardHomeStyleCard {
+    flex-basis: 88vw;
+    width: 88vw;
+  }
+}

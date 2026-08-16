@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import AppNavbar from "../components/AppNavbar";
+import "./FavoritesCards.css";
 import ExchangeProposalModal from "../components/ExchangeProposalModal";
 import LogoMark from "../components/LogoMark";
 import { useAuth } from "../context/AuthContext";
@@ -23,6 +24,52 @@ function normalizeText(value) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim();
+}
+
+function capitalizeFirstLetter(value, fallback = "") {
+  const cleanValue = String(value || "").trim();
+
+  if (!cleanValue) return fallback;
+
+  const characters = Array.from(cleanValue);
+  const firstCharacter = characters.shift() || "";
+
+  return `${firstCharacter.toLocaleUpperCase("es-AR")}${characters.join("")}`;
+}
+
+function getFavoriteCategoryTone(category) {
+  const normalizedCategory = normalizeText(category);
+
+  const categoryTones = {
+    tecnologia: "tech",
+    "hogar y muebles": "home",
+    electrodomesticos: "home",
+    herramientas: "tools",
+    construccion: "tools",
+    "deportes y fitness": "sports",
+    "accesorios para vehiculos": "vehicles",
+    mascotas: "pets",
+    moda: "fashion",
+    "juegos y juguetes": "games",
+    "instrumentos musicales": "music",
+    bebes: "baby",
+    "belleza y cuidado personal": "beauty",
+    servicios: "services",
+  };
+
+  return categoryTones[normalizedCategory] || "default";
+}
+
+function getFavoriteOfferMeta(exchange) {
+  if (isServiceExchange(exchange)) {
+    if (hasLicensedCredential(exchange)) {
+      return "Matriculado";
+    }
+
+    return getServiceTypeLabel(exchange?.offerServiceType);
+  }
+
+  return exchange?.offerState || "Estado no indicado";
 }
 
 function getCreatedAtValue(exchange) {
@@ -292,7 +339,12 @@ function MediaViewerModal({
         <div className="mediaViewerHeader">
           <div>
             <span className="miniLabel">Publicación favorita</span>
-            <strong>{title || activeMedia.name || "Publicación"}</strong>
+            <strong>
+              {capitalizeFirstLetter(
+                title || activeMedia.name,
+                "Publicación"
+              )}
+            </strong>
             {hasMultipleMedia && (
               <small>
                 Archivo {activeIndex + 1} de {mediaItems.length}
@@ -327,7 +379,10 @@ function MediaViewerModal({
           ) : (
             <img
               src={activeUrl}
-              alt={title || activeMedia.name || "Publicación"}
+              alt={capitalizeFirstLetter(
+                title || activeMedia.name,
+                "Publicación"
+              )}
               decoding="async"
             />
           )}
@@ -952,46 +1007,59 @@ function Favorites() {
                   </button>
                 </div>
 
-                <div className="favoriteCardBody">
-                  <div className="favoriteCardMeta">
-                    <span>{exchange.offerCategory || "Categoría"}</span>
-                    {isService && isLicensed && <strong>Matriculado</strong>}
+                <div className="favoriteCardBody favoriteUnifiedCardBody">
+                  <div className="favoriteUnifiedMetaRow">
+                    <span
+                      className={`favoriteUnifiedCategory ${getFavoriteCategoryTone(
+                        exchange.offerCategory
+                      )}`}
+                    >
+                      {exchange.offerCategory || "Categoría"}
+                    </span>
+
+                    <span className="favoriteUnifiedState">
+                      {getFavoriteOfferMeta(exchange)}
+                    </span>
                   </div>
 
-                  <h3>{exchange.offerTitle || "Publicación"}</h3>
+                  <h3>
+                    {capitalizeFirstLetter(
+                      exchange.offerTitle,
+                      "Publicación"
+                    )}
+                  </h3>
 
-                  <p className="favoriteCardDescription">
-                    {exchange.offerDescription ||
-                      "El usuario no agregó una descripción detallada."}
+                  <p className="favoriteCardDescription favoriteUnifiedDescription">
+                    {capitalizeFirstLetter(
+                      exchange.offerDescription,
+                      "El usuario no agregó una descripción detallada."
+                    )}
                   </p>
 
-                  <div className="favoriteCardInfoGrid">
+                  <div className="favoriteUnifiedWantsBox">
                     <div>
-                      <span>{isService ? "Servicio" : "Estado"}</span>
+                      <span>Busca a cambio:</span>
                       <strong>
-                        {isService
-                          ? getServiceTypeLabel(exchange.offerServiceType)
-                          : exchange.offerState || "No indicado"}
+                        {capitalizeFirstLetter(
+                          exchange.searchTitle,
+                          "No indicado"
+                        )}
                       </strong>
                     </div>
 
-                    <div>
-                      <span>Busca</span>
-                      <strong>{exchange.searchTitle || "No indicado"}</strong>
-                      {exchange.searchCategory === "Servicios" && (
-                        <small>
-                          {getServiceTypeLabel(exchange.searchServiceType)}
-                        </small>
-                      )}
-                    </div>
+                    <span className="favoriteUnifiedSwapIcon" aria-hidden="true">
+                      ↔
+                    </span>
                   </div>
 
-                  <div className="favoriteCardLocation">
+                  <div className="favoriteCardLocation favoriteUnifiedLocation">
                     <span aria-hidden="true">⌖</span>
-                    <strong>{getExchangeLocationLabel(exchange)}</strong>
+                    <strong title={getExchangeLocationLabel(exchange)}>
+                      {getExchangeLocationLabel(exchange)}
+                    </strong>
                   </div>
 
-                  <div className="favoriteCardActions">
+                  <div className="favoriteCardActions favoriteUnifiedActions">
                     {activeMyExchanges.length > 0 ? (
                       <button
                         type="button"
