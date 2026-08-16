@@ -10,6 +10,7 @@ import {
 import { listenUserChats } from "../services/chatService";
 import { buildMatches } from "../utils/matchUtils";
 import LogoMark from "./LogoMark";
+import "./AppNavbar.css";
 
 function getInitials(nameOrEmail) {
   if (!nameOrEmail) return "U";
@@ -54,6 +55,10 @@ function AppNavbar() {
   const [receivedInterests, setReceivedInterests] = useState([]);
   const [userChats, setUserChats] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 760px)").matches;
+  });
 
   const isLoggedIn = Boolean(user?.uid);
 
@@ -99,6 +104,36 @@ function AppNavbar() {
   }, [isLoggedIn, user?.uid]);
 
   useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    const mediaQuery = window.matchMedia("(max-width: 760px)");
+
+    const handleViewportChange = (event) => {
+      setIsMobileViewport(event.matches);
+
+      if (!event.matches) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    setIsMobileViewport(mediaQuery.matches);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleViewportChange);
+
+      return () => {
+        mediaQuery.removeEventListener("change", handleViewportChange);
+      };
+    }
+
+    mediaQuery.addListener(handleViewportChange);
+
+    return () => {
+      mediaQuery.removeListener(handleViewportChange);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!mobileMenuOpen) return undefined;
 
     const handleKeyDown = (event) => {
@@ -107,18 +142,10 @@ function AppNavbar() {
       }
     };
 
-    const handleResize = () => {
-      if (window.innerWidth > 760) {
-        setMobileMenuOpen(false);
-      }
-    };
-
     window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("resize", handleResize);
     };
   }, [mobileMenuOpen]);
 
@@ -177,91 +204,195 @@ function AppNavbar() {
     return null;
   }
 
-  return (
-    <header
-      className={
-        mobileMenuOpen
-          ? "mainAppNavbar mobileMenuIsOpen"
-          : "mainAppNavbar"
-      }
-    >
-      <div className="mainAppNavbarInner">
-        <div className="appNavbarUser">
-          <div className="appNavbarUserIdentity">
+  if (isMobileViewport) {
+    return (
+      <header className="tlcMobileNavbar">
+        <div className="tlcMobileUserRow">
+          <div className="tlcMobileUserIdentity">
             <div className="userAvatar">
               {initials}
             </div>
 
-            <div className="userInfo">
-              <span>{userName}</span>
+            <div className="tlcMobileUserInfo">
+              <strong>{userName}</strong>
               <small>Cuenta activa</small>
             </div>
           </div>
 
           <button
             type="button"
-            className="navbarLogoutButton"
+            className="tlcMobileLogoutButton"
             onClick={handleLogout}
           >
             Salir
           </button>
         </div>
 
-        <Link
-          to="/panel"
-          className="appNavbarBrand"
-          onClick={closeMobileMenu}
-        >
+        <div className="tlcMobileBrandRow">
+          <Link
+            to="/panel"
+            className="tlcMobileBrand"
+            onClick={closeMobileMenu}
+          >
+            <LogoMark />
+            <span>TeLoCambio</span>
+          </Link>
+
+          <button
+            type="button"
+            className={
+              mobileMenuOpen
+                ? "tlcMobileMenuButton active"
+                : "tlcMobileMenuButton"
+            }
+            aria-label={
+              mobileMenuOpen
+                ? "Cerrar menú"
+                : "Abrir menú"
+            }
+            aria-expanded={mobileMenuOpen}
+            onClick={() =>
+              setMobileMenuOpen((current) => !current)
+            }
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+
+        {mobileMenuOpen && (
+          <nav className="tlcMobileMenu">
+            <NavLink
+              to="/panel"
+              onClick={closeMobileMenu}
+              className={({ isActive }) =>
+                isActive
+                  ? "tlcMobileMenuLink active"
+                  : "tlcMobileMenuLink"
+              }
+            >
+              <span>Panel</span>
+              <span className="tlcMobileMenuChevron">›</span>
+            </NavLink>
+
+            <NavLink
+              to="/matches"
+              onClick={closeMobileMenu}
+              className={({ isActive }) =>
+                isActive
+                  ? "tlcMobileMenuLink active"
+                  : "tlcMobileMenuLink"
+              }
+            >
+              <span className="tlcMobileMenuLabel">
+                Matches
+                <Badge count={matchCount} />
+              </span>
+              <span className="tlcMobileMenuChevron">›</span>
+            </NavLink>
+
+            <NavLink
+              to="/propuestas"
+              onClick={closeMobileMenu}
+              className={({ isActive }) =>
+                isActive
+                  ? "tlcMobileMenuLink active"
+                  : "tlcMobileMenuLink"
+              }
+            >
+              <span className="tlcMobileMenuLabel">
+                Propuestas
+                <Badge count={pendingInterestCount} />
+              </span>
+              <span className="tlcMobileMenuChevron">›</span>
+            </NavLink>
+
+            <NavLink
+              to="/favoritos"
+              onClick={closeMobileMenu}
+              className={({ isActive }) =>
+                isActive
+                  ? "tlcMobileMenuLink active"
+                  : "tlcMobileMenuLink"
+              }
+            >
+              <span>Favoritos</span>
+              <span className="tlcMobileMenuChevron">›</span>
+            </NavLink>
+
+            <NavLink
+              to="/chats"
+              onClick={closeMobileMenu}
+              className={({ isActive }) =>
+                isActive
+                  ? "tlcMobileMenuLink active"
+                  : "tlcMobileMenuLink"
+              }
+            >
+              <span className="tlcMobileMenuLabel">
+                Chats
+                <Badge
+                  count={unreadMessagesCount}
+                  type="message"
+                />
+              </span>
+              <span className="tlcMobileMenuChevron">›</span>
+            </NavLink>
+
+            <NavLink
+              to="/publicar"
+              onClick={closeMobileMenu}
+              className={({ isActive }) =>
+                isActive
+                  ? "tlcMobileMenuLink active"
+                  : "tlcMobileMenuLink"
+              }
+            >
+              <span>Publicar</span>
+              <span className="tlcMobileMenuChevron">›</span>
+            </NavLink>
+
+            <NavLink
+              to="/usuario"
+              onClick={closeMobileMenu}
+              className={({ isActive }) =>
+                isActive
+                  ? "tlcMobileMenuLink active"
+                  : "tlcMobileMenuLink"
+              }
+            >
+              <span>Mi perfil</span>
+              <span className="tlcMobileMenuChevron">›</span>
+            </NavLink>
+          </nav>
+        )}
+      </header>
+    );
+  }
+
+  return (
+    <header className="mainAppNavbar">
+      <div className="mainAppNavbarInner">
+        <Link to="/panel" className="appNavbarBrand">
           <LogoMark />
           <span>TeLoCambio</span>
         </Link>
 
-        <button
-          type="button"
-          className={
-            mobileMenuOpen
-              ? "appNavbarMobileMenuButton active"
-              : "appNavbarMobileMenuButton"
-          }
-          aria-label={
-            mobileMenuOpen
-              ? "Cerrar menú de navegación"
-              : "Abrir menú de navegación"
-          }
-          aria-expanded={mobileMenuOpen}
-          aria-controls="app-main-navigation"
-          onClick={() =>
-            setMobileMenuOpen((current) => !current)
-          }
-        >
-          <span />
-          <span />
-          <span />
-        </button>
-
-        <nav
-          id="app-main-navigation"
-          className={
-            mobileMenuOpen
-              ? "appNavbarLinks mobileOpen"
-              : "appNavbarLinks"
-          }
-        >
+        <nav className="appNavbarLinks">
           <NavLink
             to="/panel"
-            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
                 : "appNavbarLink"
             }
           >
-            <span>Panel</span>
+            Panel
           </NavLink>
 
           <NavLink
             to="/matches"
-            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
@@ -274,7 +405,6 @@ function AppNavbar() {
 
           <NavLink
             to="/propuestas"
-            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
@@ -287,19 +417,17 @@ function AppNavbar() {
 
           <NavLink
             to="/favoritos"
-            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
                 : "appNavbarLink"
             }
           >
-            <span>Favoritos</span>
+            Favoritos
           </NavLink>
 
           <NavLink
             to="/chats"
-            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
@@ -315,28 +443,45 @@ function AppNavbar() {
 
           <NavLink
             to="/publicar"
-            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
                 : "appNavbarLink"
             }
           >
-            <span>Publicar</span>
+            Publicar
           </NavLink>
 
           <NavLink
             to="/usuario"
-            onClick={closeMobileMenu}
             className={({ isActive }) =>
               isActive
                 ? "appNavbarLink active"
                 : "appNavbarLink"
             }
           >
-            <span>Mi perfil</span>
+            Mi perfil
           </NavLink>
         </nav>
+
+        <div className="appNavbarUser">
+          <div className="userAvatar">
+            {initials}
+          </div>
+
+          <div className="userInfo">
+            <span>{userName}</span>
+            <small>Cuenta activa</small>
+          </div>
+
+          <button
+            type="button"
+            className="navbarLogoutButton"
+            onClick={handleLogout}
+          >
+            Salir
+          </button>
+        </div>
       </div>
     </header>
   );

@@ -1,0 +1,312 @@
+/* =========================================================
+   AppNavbar.css
+   Navbar móvil aislado de App.css.
+   El DOM .tlcMobile* sólo se renderiza en dispositivos <= 760px,
+   por eso estas reglas no necesitan media query.
+   ========================================================= */
+
+.tlcMobileNavbar {
+  position: sticky;
+  top: 0;
+  z-index: 140;
+  width: 100%;
+  display: block;
+  background: rgba(246, 248, 251, 0.985);
+  border-bottom: 1px solid rgba(219, 227, 238, 0.96);
+  box-shadow: 0 8px 24px rgba(19, 34, 56, 0.055);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  font-family: "Rubik", sans-serif;
+}
+
+.tlcMobileNavbar *,
+.tlcMobileNavbar *::before,
+.tlcMobileNavbar *::after {
+  box-sizing: border-box;
+}
+
+.tlcMobileUserRow {
+  width: 100%;
+  min-height: 58px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid rgba(219, 227, 238, 0.82);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.tlcMobileUserIdentity {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.tlcMobileNavbar .userAvatar {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  margin: 0;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #00c6a7;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(0, 198, 167, 0.18);
+}
+
+.tlcMobileUserInfo {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: grid;
+  gap: 2px;
+}
+
+.tlcMobileUserInfo strong {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: #101828;
+  font-size: 13px;
+  line-height: 1.15;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tlcMobileUserInfo small {
+  margin: 0;
+  color: #667085;
+  font-size: 10px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.tlcMobileLogoutButton {
+  width: auto;
+  min-width: 64px;
+  min-height: 36px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid #dbe3ee;
+  border-radius: 999px;
+  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #132238;
+  font-family: "Rubik", sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  box-shadow: 0 7px 18px rgba(19, 34, 56, 0.045);
+  cursor: pointer;
+}
+
+.tlcMobileBrandRow {
+  width: 100%;
+  min-height: 62px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(246, 248, 251, 0.985);
+}
+
+.tlcMobileBrand {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #132238;
+  text-decoration: none;
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+}
+
+.tlcMobileBrand .logoMark {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  margin: 0;
+  display: inline-grid;
+  place-items: center;
+}
+
+.tlcMobileBrand .logoMark img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.tlcMobileMenuButton {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  margin: 0;
+  border: 1px solid #dbe3ee;
+  border-radius: 15px;
+  padding: 0;
+  display: grid;
+  place-content: center;
+  gap: 5px;
+  background: #ffffff;
+  color: #132238;
+  box-shadow: 0 8px 20px rgba(19, 34, 56, 0.055);
+  cursor: pointer;
+}
+
+.tlcMobileMenuButton > span {
+  width: 20px;
+  height: 2px;
+  margin: 0;
+  padding: 0;
+  display: block;
+  border-radius: 999px;
+  background: currentColor;
+  transform-origin: center;
+  transition:
+    transform 180ms ease,
+    opacity 140ms ease;
+}
+
+.tlcMobileMenuButton.active {
+  border-color: rgba(0, 198, 167, 0.34);
+  background: rgba(0, 198, 167, 0.1);
+  color: #008c76;
+}
+
+.tlcMobileMenuButton.active > span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.tlcMobileMenuButton.active > span:nth-child(2) {
+  opacity: 0;
+}
+
+.tlcMobileMenuButton.active > span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.tlcMobileMenu {
+  width: 100%;
+  margin: 0;
+  padding: 8px 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  border: 0;
+  border-top: 1px solid rgba(219, 227, 238, 0.84);
+  border-radius: 0;
+  background: #ffffff;
+  box-shadow: 0 20px 42px rgba(19, 34, 56, 0.11);
+  animation: tlcMobileMenuEnter 150ms ease-out both;
+}
+
+.tlcMobileMenuLink {
+  width: 100%;
+  min-height: 50px;
+  margin: 0;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-radius: 14px;
+  background: transparent;
+  color: #132238;
+  text-decoration: none;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 850;
+}
+
+.tlcMobileMenuLink:hover {
+  background: #f8fafc;
+}
+
+.tlcMobileMenuLink.active {
+  background: rgba(0, 198, 167, 0.1);
+  color: #008c76;
+}
+
+.tlcMobileMenuLabel {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tlcMobileMenuChevron {
+  flex: 0 0 auto;
+  color: #98a2b3;
+  font-size: 25px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.tlcMobileMenuLink.active .tlcMobileMenuChevron {
+  color: #008c76;
+}
+
+.tlcMobileNavbar .navNotificationBadge {
+  min-width: 22px;
+  height: 22px;
+  margin: 0;
+  border-radius: 999px;
+  padding: 0 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff4d4f;
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.tlcMobileNavbar .navMessageBadge {
+  background: #00c6a7;
+}
+
+@media (max-width: 420px) {
+  .tlcMobileUserRow,
+  .tlcMobileBrandRow,
+  .tlcMobileMenu {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .tlcMobileBrand {
+    font-size: 19px;
+  }
+
+  .tlcMobileBrand .logoMark {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+}
+
+@keyframes tlcMobileMenuEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
