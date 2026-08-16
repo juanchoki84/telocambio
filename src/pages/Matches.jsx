@@ -1727,11 +1727,9 @@ function Matches() {
 
                 <div className="modernMatchContent">
                   <div className="modernMatchTopline">
-                    <span className="miniLabel">Match con</span>
+                    <span className="miniLabel">Match en</span>
                     <span>{getExchangeLocationLabel(match.otherExchange)}</span>
                   </div>
-
-                  <h2>{match.otherExchange.userName || "Usuario"}</h2>
 
                   <div className="matchOfferBox">
                     <span>La otra persona ofrece</span>
