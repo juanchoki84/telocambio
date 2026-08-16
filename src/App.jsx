@@ -17,6 +17,7 @@ import Privacy from "./pages/Privacy";
 import ScrollToTop from "./components/ScrollToTop";
 import Help from "./pages/Help";
 import Favorites from "./pages/Favorites";
+import DeleteAccount from "./pages/DeleteAccount";
 
 function App() {
   return (
@@ -53,6 +54,10 @@ function App() {
         <Route path="/seguridad" element={<Safety />} />
         <Route path="/privacidad" element={<Privacy />} />
         <Route path="/ayuda" element={<Help />} />
+        <Route
+          path="/eliminar-cuenta"
+          element={<DeleteAccount />}
+        />
 
         <Route
           path="*"

@@ -10,6 +10,10 @@ const footerLinks = [
     to: "/privacidad",
   },
   {
+    label: "Eliminar cuenta",
+    to: "/eliminar-cuenta",
+  },
+  {
     label: "Ayuda",
     to: "/ayuda",
   },
@@ -48,6 +52,7 @@ function AppFooter() {
 
         <div className="appFooterLegal">
           <p>Copyright © 2026 TeLoCambio. Todos los derechos reservados.</p>
+
           <p>
             Plataforma de conexión entre usuarios para coordinar intercambios.
             TeLoCambio no interviene como parte compradora, vendedora ni

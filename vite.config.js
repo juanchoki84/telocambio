@@ -11,6 +11,7 @@ export default defineConfig({
     strictPort: true,
     allowedHosts: [
       "dirtiness-grimy-emerald.ngrok-free.dev",
+      "drab-mollusk-reassign.ngrok-free.dev",
     ],
   },
 });
