@@ -73,7 +73,9 @@ function AppNavbar() {
       setMyExchanges
     );
 
-    const unsubscribeActiveExchanges = listenActiveExchanges(setAllExchanges);
+    const unsubscribeActiveExchanges = listenActiveExchanges(
+      setAllExchanges
+    );
 
     const unsubscribeInterests = listenUserInterests(
       user.uid,
@@ -82,7 +84,10 @@ function AppNavbar() {
       }
     );
 
-    const unsubscribeChats = listenUserChats(user.uid, setUserChats);
+    const unsubscribeChats = listenUserChats(
+      user.uid,
+      setUserChats
+    );
 
     return () => {
       unsubscribeMyExchanges?.();
@@ -95,11 +100,36 @@ function AppNavbar() {
   const matchCount = useMemo(() => {
     if (!user?.uid) return 0;
 
-    return buildMatches(myExchanges, allExchanges, user.uid).length;
+    const matches = buildMatches(
+      myExchanges,
+      allExchanges,
+      user.uid
+    );
+
+    /*
+      Una misma publicación externa puede coincidir con varias
+      publicaciones propias. El badge debe contar cada publicación
+      externa una sola vez, igual que la página de Matches.
+    */
+    const uniqueExternalPublicationIds = new Set(
+      matches
+        .map((match) => {
+          const externalExchangeId = String(
+            match?.otherExchange?.id || ""
+          ).trim();
+
+          return externalExchangeId || match?.id || "";
+        })
+        .filter(Boolean)
+    );
+
+    return uniqueExternalPublicationIds.size;
   }, [myExchanges, allExchanges, user?.uid]);
 
   const pendingInterestCount = useMemo(() => {
-    return receivedInterests.filter((item) => item.status === "pending").length;
+    return receivedInterests.filter(
+      (item) => item.status === "pending"
+    ).length;
   }, [receivedInterests]);
 
   const unreadMessagesCount = useMemo(() => {
@@ -129,7 +159,9 @@ function AppNavbar() {
           <NavLink
             to="/panel"
             className={({ isActive }) =>
-              isActive ? "appNavbarLink active" : "appNavbarLink"
+              isActive
+                ? "appNavbarLink active"
+                : "appNavbarLink"
             }
           >
             Panel
@@ -138,7 +170,9 @@ function AppNavbar() {
           <NavLink
             to="/matches"
             className={({ isActive }) =>
-              isActive ? "appNavbarLink active" : "appNavbarLink"
+              isActive
+                ? "appNavbarLink active"
+                : "appNavbarLink"
             }
           >
             <span>Matches</span>
@@ -148,31 +182,47 @@ function AppNavbar() {
           <NavLink
             to="/propuestas"
             className={({ isActive }) =>
-              isActive ? "appNavbarLink active" : "appNavbarLink"
+              isActive
+                ? "appNavbarLink active"
+                : "appNavbarLink"
             }
           >
             <span>Propuestas</span>
             <Badge count={pendingInterestCount} />
           </NavLink>
 
-          <NavLink to="/favoritos" className="appNavbarLink">
-           Favoritos
+          <NavLink
+            to="/favoritos"
+            className={({ isActive }) =>
+              isActive
+                ? "appNavbarLink active"
+                : "appNavbarLink"
+            }
+          >
+            Favoritos
           </NavLink>
 
           <NavLink
             to="/chats"
             className={({ isActive }) =>
-              isActive ? "appNavbarLink active" : "appNavbarLink"
+              isActive
+                ? "appNavbarLink active"
+                : "appNavbarLink"
             }
           >
             <span>Chats</span>
-            <Badge count={unreadMessagesCount} type="message" />
+            <Badge
+              count={unreadMessagesCount}
+              type="message"
+            />
           </NavLink>
 
           <NavLink
             to="/publicar"
             className={({ isActive }) =>
-              isActive ? "appNavbarLink active" : "appNavbarLink"
+              isActive
+                ? "appNavbarLink active"
+                : "appNavbarLink"
             }
           >
             Publicar
@@ -181,7 +231,9 @@ function AppNavbar() {
           <NavLink
             to="/usuario"
             className={({ isActive }) =>
-              isActive ? "appNavbarLink active" : "appNavbarLink"
+              isActive
+                ? "appNavbarLink active"
+                : "appNavbarLink"
             }
           >
             Mi perfil
@@ -189,7 +241,9 @@ function AppNavbar() {
         </nav>
 
         <div className="appNavbarUser">
-          <div className="userAvatar">{initials}</div>
+          <div className="userAvatar">
+            {initials}
+          </div>
 
           <div className="userInfo">
             <span>{userName}</span>

@@ -119,6 +119,19 @@ function normalizeText(value) {
     .trim();
 }
 
+function capitalizeFirstLetter(value, fallback = "") {
+  const cleanValue = String(value || "").trim();
+
+  if (!cleanValue) {
+    return fallback;
+  }
+
+  const characters = Array.from(cleanValue);
+  const firstCharacter = characters.shift() || "";
+
+  return `${firstCharacter.toLocaleUpperCase("es-AR")}${characters.join("")}`;
+}
+
 function normalizeMediaCollection(mediaValue) {
   if (Array.isArray(mediaValue)) {
     return mediaValue.filter(Boolean);
@@ -691,7 +704,12 @@ function MediaViewerModal({
         <div className="mediaViewerHeader">
           <div>
             <span className="miniLabel">Imágenes de la publicación</span>
-            <strong>{title || activeMedia.name || "Publicación"}</strong>
+            <strong>
+              {capitalizeFirstLetter(
+                title || activeMedia.name,
+                "Publicación"
+              )}
+            </strong>
           </div>
 
           <button
@@ -726,7 +744,10 @@ function MediaViewerModal({
           ) : (
             <img
               src={activeMediaUrl}
-              alt={title || activeMedia.name || "Publicación"}
+              alt={capitalizeFirstLetter(
+                title || activeMedia.name,
+                "Publicación"
+              )}
               decoding="async"
             />
           )}
@@ -809,7 +830,12 @@ function ReportPublicationModal({
         <div className="reportModalHeader">
           <div>
             <span className="miniLabel">Denunciar publicación</span>
-            <h3>{exchange.offerTitle || "Publicación"}</h3>
+            <h3>
+              {capitalizeFirstLetter(
+                exchange.offerTitle,
+                "Publicación"
+              )}
+            </h3>
           </div>
 
           <button type="button" className="reportModalClose" onClick={onClose}>
@@ -1081,7 +1107,10 @@ function ExchangeMediaPreview({
             <img
               className="exchangeMediaPreview"
               src={activeMediaUrl}
-              alt={exchange.offerTitle || "Publicación"}
+              alt={capitalizeFirstLetter(
+                exchange.offerTitle,
+                "Publicación"
+              )}
               loading="eager"
               decoding="async"
               style={{
@@ -1155,7 +1184,10 @@ function ExchangeMediaPreview({
           mediaItems={mediaItems}
           initialIndex={expandedMediaIndex}
           mediaUrls={mediaUrls}
-          title={exchange.offerTitle}
+          title={capitalizeFirstLetter(
+            exchange.offerTitle,
+            "Publicación"
+          )}
           onClose={closeMediaViewer}
         />
       )}
@@ -1923,9 +1955,10 @@ function Dashboard() {
     if (!user || !exchange?.id) return;
 
     const confirmed = window.confirm(
-      `¿Eliminar definitivamente la publicación "${
-        exchange.offerTitle || exchange.searchTitle
-      }"? Esta acción borrará la publicación, sus propuestas relacionadas y sus fotos/videos.`
+      `¿Eliminar definitivamente la publicación "${capitalizeFirstLetter(
+        exchange.offerTitle || exchange.searchTitle,
+        "Publicación"
+      )}"? Esta acción borrará la publicación, sus propuestas relacionadas y sus fotos/videos.`
     );
 
     if (!confirmed) return;
@@ -2261,10 +2294,10 @@ function Dashboard() {
                     key={suggestion.id}
                     role="link"
                     tabIndex={0}
-                    aria-label={`Ver publicación ${
-                      suggestion.offerTitle ||
+                    aria-label={`Ver publicación ${capitalizeFirstLetter(
+                      suggestion.offerTitle,
                       "sin título"
-                    }`}
+                    )}`}
                     onClick={openPublicationDetail}
                     onKeyDown={(event) => {
                       if (
@@ -2288,15 +2321,19 @@ function Dashboard() {
 
                     <div className="dashboardSuggestionBody dashboardSuggestionCompactBody">
                       <h3>
-                        {suggestion.offerTitle ||
-                          "Publicación"}
+                        {capitalizeFirstLetter(
+                          suggestion.offerTitle,
+                          "Publicación"
+                        )}
                       </h3>
 
                       <div className="dashboardSuggestionCompactSearch">
                         <span>Busca</span>
                         <strong>
-                          {suggestion.searchTitle ||
-                            "No indicado"}
+                          {capitalizeFirstLetter(
+                            suggestion.searchTitle,
+                            "No indicado"
+                          )}
                         </strong>
                       </div>
 
@@ -2380,13 +2417,23 @@ function Dashboard() {
                 <div className="compactExchangeInfo">
                   <div>
                     <span className="miniLabel">Busco</span>
-                    <h3>{exchange.searchTitle}</h3>
+                    <h3>
+                      {capitalizeFirstLetter(
+                        exchange.searchTitle,
+                        "No indicado"
+                      )}
+                    </h3>
                     <p>{getSearchMetaSummary(exchange)}</p>
                   </div>
 
                   <div>
                     <span className="miniLabel">Ofrezco</span>
-                    <h3>{exchange.offerTitle}</h3>
+                    <h3>
+                      {capitalizeFirstLetter(
+                        exchange.offerTitle,
+                        "Publicación"
+                      )}
+                    </h3>
                     <p>{getOfferMetaSummary(exchange)}</p>
                   </div>
                 </div>
